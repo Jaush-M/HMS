@@ -1,4 +1,6 @@
 using HMS.Infrastructure;
+using HMS.Infrastructure.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,5 +31,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+await DataSeeder.SeedAsync(app.Services);
 
 app.Run();
