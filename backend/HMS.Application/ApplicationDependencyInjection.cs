@@ -22,6 +22,7 @@ public static class ApplicationDependencyInjection
         services.AddScoped<IUserService,            UserService>();
         services.AddScoped<IPaymentService,         PaymentService>();
         services.AddScoped<IAncillaryServiceService, AncillaryServiceService>();
+        services.AddScoped<IReportService,          ReportService>();
 
         return services;
     }

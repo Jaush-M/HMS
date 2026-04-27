@@ -2,6 +2,10 @@ using HMS.Application;
 using HMS.Infrastructure;
 using HMS.Infrastructure.Persistence;
 
+// Npgsql v6+ requires UTC DateTimes for timestamptz columns.
+// This switch lets Unspecified-kind DateTimes (e.g. from query strings) pass through.
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
