@@ -4,6 +4,7 @@ using HMS.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using BcryptHelper = BCrypt.Net.BCrypt;
 
 namespace HMS.Infrastructure.Persistence;
 
@@ -16,6 +17,35 @@ public static class DataSeeder
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<HmsDbContext>>();
 
         await db.Database.MigrateAsync();
+
+        // ── Phase 6: replace placeholder password hashes with real BCrypt hashes ─
+        // Default test credentials:
+        //   admin@grandplaza.com    → Admin@1234!
+        //   manager@grandplaza.com  → Manager@1234!
+        //   staff@grandplaza.com    → Staff@1234!
+        //   guest@example.com       → Guest@1234!
+        const string placeholder = "PLACEHOLDER_HASH_REPLACE_IN_PHASE_6";
+        var withPlaceholder = await db.Users
+            .Where(u => u.PasswordHash == placeholder)
+            .ToListAsync();
+
+        if (withPlaceholder.Any())
+        {
+            var passwordMap = new Dictionary<string, string>
+            {
+                ["admin@grandplaza.com"]   = "Admin@1234!",
+                ["manager@grandplaza.com"] = "Manager@1234!",
+                ["staff@grandplaza.com"]   = "Staff@1234!",
+                ["guest@example.com"]      = "Guest@1234!",
+            };
+            foreach (var u in withPlaceholder)
+            {
+                var plain = passwordMap.TryGetValue(u.Email, out var p) ? p : "Default@1234!";
+                u.PasswordHash = BcryptHelper.HashPassword(plain, workFactor: 12);
+            }
+            await db.SaveChangesAsync();
+            logger.LogInformation("Replaced {Count} placeholder password hash(es).", withPlaceholder.Count);
+        }
 
         if (await db.Hotels.AnyAsync()) return;
 
@@ -49,13 +79,15 @@ public static class DataSeeder
         await db.SaveChangesAsync();
 
         // ── Users (one per role) ───────────────────────────────────────────────
-        // Passwords are placeholder hashes — replaced by real BCrypt hashes in Phase 6.
-        const string placeholderHash = "PLACEHOLDER_HASH_REPLACE_IN_PHASE_6";
-
+        // Default credentials (change in production):
+        //   admin@grandplaza.com   → Admin@1234!
+        //   manager@grandplaza.com → Manager@1234!
+        //   staff@grandplaza.com   → Staff@1234!
+        //   guest@example.com      → Guest@1234!
         var admin = new StaffUser
         {
             Email = "admin@grandplaza.com",
-            PasswordHash = placeholderHash,
+            PasswordHash = BcryptHelper.HashPassword("Admin@1234!", workFactor: 12),
             Role = UserRole.Admin,
             FirstName = "Adam",
             LastName = "Admin",
@@ -67,7 +99,7 @@ public static class DataSeeder
         var manager = new StaffUser
         {
             Email = "manager@grandplaza.com",
-            PasswordHash = placeholderHash,
+            PasswordHash = BcryptHelper.HashPassword("Manager@1234!", workFactor: 12),
             Role = UserRole.HotelManager,
             FirstName = "Mary",
             LastName = "Manager",
@@ -79,7 +111,7 @@ public static class DataSeeder
         var staff = new StaffUser
         {
             Email = "staff@grandplaza.com",
-            PasswordHash = placeholderHash,
+            PasswordHash = BcryptHelper.HashPassword("Staff@1234!", workFactor: 12),
             Role = UserRole.FrontDeskStaff,
             FirstName = "Sam",
             LastName = "Staff",
@@ -91,7 +123,7 @@ public static class DataSeeder
         var guest = new GuestUser
         {
             Email = "guest@example.com",
-            PasswordHash = placeholderHash,
+            PasswordHash = BcryptHelper.HashPassword("Guest@1234!", workFactor: 12),
             Role = UserRole.Guest,
             FirstName = "Grace",
             LastName = "Guest",

@@ -1,7 +1,9 @@
 // Author: Salaams
 using HMS.Application.Interfaces.Repositories;
+using HMS.Application.Interfaces.Security;
 using HMS.Infrastructure.Persistence;
 using HMS.Infrastructure.Repositories;
+using HMS.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +31,11 @@ public static class DependencyInjection
         services.AddScoped<IPaymentRepository,          PaymentRepository>();
         services.AddScoped<IInvoiceRepository,          InvoiceRepository>();
         services.AddScoped<IAncillaryServiceRepository, AncillaryServiceRepository>();
+        services.AddScoped<IAuditLogRepository,         AuditLogRepository>();
+
+        // ── Security services ─────────────────────────────────────────────────
+        services.AddScoped<IPasswordHasher,  BcryptPasswordHasher>();
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         return services;
     }

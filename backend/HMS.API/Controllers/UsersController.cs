@@ -2,6 +2,7 @@
 using HMS.Application.DTOs.Bookings;
 using HMS.Application.DTOs.Users;
 using HMS.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers;
@@ -9,6 +10,7 @@ namespace HMS.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -55,6 +57,7 @@ public class UsersController : ControllerBase
 
     /// <summary>Returns all staff members.</summary>
     [HttpGet("staff")]
+    [Authorize(Roles = "FrontDeskStaff,HotelManager,Admin")]
     [ProducesResponseType(typeof(IEnumerable<StaffUserDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<StaffUserDto>>> GetAllStaff()
     {
@@ -64,6 +67,7 @@ public class UsersController : ControllerBase
 
     /// <summary>Returns a staff member by ID.</summary>
     [HttpGet("staff/{id:int}")]
+    [Authorize(Roles = "FrontDeskStaff,HotelManager,Admin")]
     [ProducesResponseType(typeof(StaffUserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<StaffUserDto>> GetStaff(int id)

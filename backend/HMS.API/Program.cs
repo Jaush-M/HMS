@@ -1,6 +1,9 @@
+using System.Text;
 using HMS.Application;
 using HMS.Infrastructure;
 using HMS.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 // Npgsql v6+ requires UTC DateTimes for timestamptz columns.
 // This switch lets Unspecified-kind DateTimes (e.g. from query strings) pass through.
@@ -8,12 +11,34 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ── JWT authentication ─────────────────────────────────────────────────────
+var jwtSection = builder.Configuration.GetSection("Jwt");
+var jwtKey     = jwtSection["Key"] ?? throw new InvalidOperationException("Jwt:Key not configured.");
 
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+            options.MapInboundClaims = false;   // keep claim names as-is ("role", "sub", etc.)
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer           = true,
+            ValidateAudience         = true,
+            ValidateLifetime         = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer              = jwtSection["Issuer"]   ?? "HMS",
+            ValidAudience            = jwtSection["Audience"] ?? "HMS",
+            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            RoleClaimType            = "role",
+            NameClaimType            = "sub",
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// ── Application services ───────────────────────────────────────────────────
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
@@ -21,19 +46,24 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ── HTTP pipeline ──────────────────────────────────────────────────────────
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-       options.SwaggerEndpoint("/openapi/v1.json", "HMS API V1"); 
+        options.SwaggerEndpoint("/openapi/v1.json", "HMS API V1");
     });
+}
+else
+{
+    // HSTS — 1 year, include subdomains
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

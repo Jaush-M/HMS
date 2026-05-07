@@ -11,6 +11,9 @@ public class UserRepository : IUserRepository
     private readonly HmsDbContext _db;
     public UserRepository(HmsDbContext db) => _db = db;
 
+    public async Task<User?> GetByIdAsync(int id) =>
+        await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
     public async Task<User?> GetByEmailAsync(string email) =>
         await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
@@ -25,6 +28,12 @@ public class UserRepository : IUserRepository
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .ToListAsync();
+
+    public async Task AddAsync(GuestUser guest)
+    {
+        _db.Guests.Add(guest);
+        await _db.SaveChangesAsync();
+    }
 
     public async Task UpdateAsync(User user)
     {

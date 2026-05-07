@@ -1,8 +1,10 @@
 // Author: Salaams
+using System.Security.Claims;
 using HMS.Application.DTOs.Bookings;
 using HMS.Application.DTOs.Invoices;
 using HMS.Application.DTOs.Payments;
 using HMS.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers;
@@ -10,6 +12,7 @@ namespace HMS.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class BookingsController : ControllerBase
 {
     private readonly IBookingService _bookingService;
@@ -50,15 +53,22 @@ public class BookingsController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new booking for a guest.
-    /// NOTE: guestId will be extracted from JWT claims in Phase 6.
+    /// Creates a new booking. Guest ID is extracted from the JWT claims.
+    /// Staff may also create bookings on behalf of guests.
     /// </summary>
     [HttpPost("guest/{guestId:int}")]
+    [Authorize(Roles = "Guest,FrontDeskStaff,HotelManager,Admin")]
     [ProducesResponseType(typeof(BookingDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<BookingDto>> Create(int guestId, [FromBody] CreateBookingDto dto)
     {
+        // Guests can only create bookings for themselves; staff can book on behalf of any guest
+        var callerRole = User.FindFirst("role")?.Value ?? string.Empty;
+        var callerId   = int.TryParse(User.FindFirst("sub")?.Value, out var id) ? id : 0;
+        if (callerRole == "Guest" && callerId != guestId)
+            return Forbid();
+
         try
         {
             var booking = await _bookingService.CreateBookingAsync(guestId, dto);

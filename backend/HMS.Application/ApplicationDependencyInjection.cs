@@ -4,6 +4,7 @@ using HMS.Application.Interfaces.Services;
 using HMS.Application.Mappings;
 using HMS.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
+// IAuthService registration added in Phase 6
 
 namespace HMS.Application;
 
@@ -16,6 +17,7 @@ public static class ApplicationDependencyInjection
             cfg.AddProfile<MappingProfile>()).CreateMapper());
 
         // Application-layer services
+        services.AddScoped<IAuthService,            AuthService>();
         services.AddScoped<IHotelService,           HotelService>();
         services.AddScoped<IRoomService,            RoomService>();
         services.AddScoped<IBookingService,         BookingManagementService>();

@@ -2,6 +2,7 @@
 using HMS.Application.DTOs.Hotels;
 using HMS.Application.DTOs.Users;
 using HMS.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers;
@@ -13,6 +14,7 @@ namespace HMS.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
+[Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
     private readonly IHotelService _hotelService;

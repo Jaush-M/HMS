@@ -1,6 +1,7 @@
 // Author: Salaams
 using HMS.Application.DTOs.Reports;
 using HMS.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers;
@@ -13,6 +14,7 @@ namespace HMS.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
+[Authorize(Roles = "HotelManager,Admin")]
 public class ReportsController : ControllerBase
 {
     private readonly IReportService _reportService;
