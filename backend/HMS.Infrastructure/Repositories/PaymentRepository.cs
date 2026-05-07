@@ -22,4 +22,10 @@ public class PaymentRepository : IPaymentRepository
         _db.Payments.Add(payment);
         await _db.SaveChangesAsync();
     }
+
+    public async Task UpdateAsync(Payment payment)
+    {
+        _db.Payments.Update(payment);
+        await _db.SaveChangesAsync();
+    }
 }
