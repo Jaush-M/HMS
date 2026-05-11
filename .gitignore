@@ -482,5 +482,5 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-bun.lock
 appsettings.Local.json
+.local/
