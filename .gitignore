@@ -484,3 +484,7 @@ $RECYCLE.BIN/
 
 appsettings.Local.json
 .local/
+
+.agents/
+.claude/
+skills-lock.json
