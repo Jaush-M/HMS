@@ -1,8 +1,16 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-interface Faq { q: string; a: string; }
-interface Review { name: string; role: string; text: string; initials: string; }
+interface Faq {
+  q: string;
+  a: string;
+}
+interface Review {
+  name: string;
+  role: string;
+  text: string;
+  initials: string;
+}
 
 @Component({
   selector: 'app-landing',
@@ -11,7 +19,9 @@ interface Review { name: string; role: string; text: string; initials: string; }
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- ─── HERO ─── -->
-    <section class="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden pb-16 md:pb-24">
+    <section
+      class="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden pb-16 md:pb-24"
+    >
       <img
         src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=2000&q=80"
         alt=""
@@ -24,23 +34,30 @@ interface Review { name: string; role: string; text: string; initials: string; }
       ></div>
 
       <div class="relative z-10 mx-auto w-full max-w-6xl px-6">
-        <p class="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-400">
-          Grand Plaza Resort & Spa · Maldives
-        </p>
-        <h1 class="mt-4 max-w-2xl text-4xl font-bold tracking-tight text-white leading-[1.07] md:text-6xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-400">Grand Plaza</p>
+        <h1
+          class="mt-4 max-w-2xl text-4xl font-bold tracking-tight text-white leading-[1.07] md:text-6xl"
+        >
           Begin your dream stay<br />with paradise at your feet
         </h1>
         <p class="mt-5 max-w-lg text-[15px] leading-7 text-white/70">
-          Private island luxury, pristine coral reefs, and award-winning hospitality in the heart of the Indian Ocean.
+          Private island luxury, pristine coral reefs, and award-winning hospitality in the heart of
+          the Indian Ocean.
         </p>
 
         <!-- Search form -->
-        <div class="mt-8 grid grid-cols-1 rounded-2xl bg-white p-2 shadow-2xl md:grid-cols-[1fr_1px_1fr_1px_1fr_auto]">
+        <div
+          class="mt-8 grid grid-cols-1 rounded-2xl bg-white p-2 shadow-2xl md:grid-cols-[1fr_1px_1fr_1px_1fr_auto]"
+        >
           <div class="flex items-center gap-3 px-4 py-3">
-            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true">bed</span>
+            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true"
+              >bed</span
+            >
             <div class="min-w-0 flex-1">
               <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Room type</p>
-              <select class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none">
+              <select
+                class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none"
+              >
                 <option value="">Any type</option>
                 <option>Overwater Bungalow</option>
                 <option>Beach Villa</option>
@@ -51,18 +68,28 @@ interface Review { name: string; role: string; text: string; initials: string; }
           </div>
           <div class="hidden bg-zinc-100 md:block"></div>
           <div class="flex items-center gap-3 px-4 py-3">
-            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true">calendar_today</span>
+            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true"
+              >calendar_today</span
+            >
             <div class="min-w-0 flex-1">
               <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Check-in</p>
-              <input type="date" class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none" />
+              <input
+                type="date"
+                class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none"
+              />
             </div>
           </div>
           <div class="hidden bg-zinc-100 md:block"></div>
           <div class="flex items-center gap-3 px-4 py-3">
-            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true">calendar_today</span>
+            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true"
+              >calendar_today</span
+            >
             <div class="min-w-0 flex-1">
               <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Check-out</p>
-              <input type="date" class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none" />
+              <input
+                type="date"
+                class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none"
+              />
             </div>
           </div>
           <a
@@ -86,28 +113,39 @@ interface Review { name: string; role: string; text: string; initials: string; }
       <div class="mx-auto max-w-6xl grid grid-cols-1 gap-16 md:grid-cols-2 items-center">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.32em] text-cyan-500">#About Us</p>
-          <h2 class="mt-4 text-3xl font-bold tracking-tight text-zinc-900 leading-tight md:text-[2.5rem]">
+          <h2
+            class="mt-4 text-3xl font-bold tracking-tight text-zinc-900 leading-tight md:text-[2.5rem]"
+          >
             A passionate team dedicated to making your stay unforgettable
           </h2>
           <p class="mt-5 text-[15px] leading-7 text-zinc-500">
-            Grand Plaza Resort & Spa is a five-star private island retreat nestled in the North Malé Atoll. Our mission is to deliver personalised hospitality that transforms every moment into a lasting memory.
+            Grand Plaza is a five-star private island retreat nestled in the North Malé Atoll. Our
+            mission is to deliver personalised hospitality that transforms every moment into a
+            lasting memory.
           </p>
           <p class="mt-3 text-[15px] leading-7 text-zinc-500">
-            From sunrise yoga on your overwater deck to candlelit dinners above the lagoon — every detail at Grand Plaza is crafted with intention.
+            From sunrise yoga on your overwater deck to candlelit dinners above the lagoon — every
+            detail at Grand Plaza is crafted with intention.
           </p>
         </div>
         <div class="grid grid-cols-3 gap-4">
           <div class="rounded-2xl bg-zinc-50 p-6 text-center">
             <p class="text-4xl font-bold text-zinc-900">512<span class="text-cyan-500">+</span></p>
-            <p class="mt-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Happy Guests</p>
+            <p class="mt-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+              Happy Guests
+            </p>
           </div>
           <div class="rounded-2xl bg-zinc-50 p-6 text-center">
             <p class="text-4xl font-bold text-zinc-900">52</p>
-            <p class="mt-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Luxury Villas</p>
+            <p class="mt-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+              Luxury Villas
+            </p>
           </div>
           <div class="rounded-2xl bg-zinc-50 p-6 text-center">
             <p class="text-4xl font-bold text-zinc-900">4.9<span class="text-cyan-500">★</span></p>
-            <p class="mt-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Guest Rating</p>
+            <p class="mt-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+              Guest Rating
+            </p>
           </div>
         </div>
       </div>
@@ -118,20 +156,27 @@ interface Review { name: string; role: string; text: string; initials: string; }
       <div class="mx-auto max-w-6xl">
         <p class="text-xs font-bold uppercase tracking-[0.32em] text-cyan-500">#Our Rooms</p>
         <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
-          <h2 class="max-w-xl text-3xl font-bold tracking-tight text-zinc-900 leading-tight md:text-[2.5rem]">
+          <h2
+            class="max-w-xl text-3xl font-bold tracking-tight text-zinc-900 leading-tight md:text-[2.5rem]"
+          >
             Explore our exclusive collection of rooms & villas
           </h2>
           <a
             routerLink="/rooms/search"
             class="shrink-0 rounded-full border border-zinc-200 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50"
-          >View all rooms</a>
+            >View all rooms</a
+          >
         </div>
         <p class="mt-3 max-w-xl text-[15px] leading-7 text-zinc-500">
-          Each villa is a sanctuary designed for pure indulgence — where the Indian Ocean becomes your living room.
+          Each villa is a sanctuary designed for pure indulgence — where the Indian Ocean becomes
+          your living room.
         </p>
 
         <!-- Asymmetric grid: large left spans 2 rows, 2 stacked right -->
-        <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2" style="grid-template-rows: auto auto;">
+        <div
+          class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2"
+          style="grid-template-rows: auto auto;"
+        >
           <a
             routerLink="/rooms/search"
             class="group relative block overflow-hidden rounded-2xl md:row-span-2"
@@ -142,18 +187,29 @@ interface Review { name: string; role: string; text: string; initials: string; }
               alt="Overwater Bungalow"
               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/82 via-zinc-950/10 to-transparent"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-zinc-950/82 via-zinc-950/10 to-transparent"
+            ></div>
             <div class="absolute bottom-0 left-0 p-7">
-              <p class="text-[11px] font-semibold uppercase tracking-widest text-white/55">Most Popular</p>
+              <p class="text-[11px] font-semibold uppercase tracking-widest text-white/55">
+                Most Popular
+              </p>
               <p class="mt-1 text-2xl font-bold text-white">Overwater Bungalow</p>
-              <p class="mt-1.5 text-[13px] text-white/60">Direct lagoon access · Private sun deck · Glass floor</p>
-              <span class="mt-4 inline-block text-[13px] font-semibold text-cyan-300 underline underline-offset-2 transition-colors group-hover:text-cyan-200">
+              <p class="mt-1.5 text-[13px] text-white/60">
+                Direct lagoon access · Private sun deck · Glass floor
+              </p>
+              <span
+                class="mt-4 inline-block text-[13px] font-semibold text-cyan-300 underline underline-offset-2 transition-colors group-hover:text-cyan-200"
+              >
                 Explore rooms →
               </span>
             </div>
           </a>
 
-          <a routerLink="/rooms/search" class="group relative block h-52 overflow-hidden rounded-2xl md:h-auto">
+          <a
+            routerLink="/rooms/search"
+            class="group relative block h-52 overflow-hidden rounded-2xl md:h-auto"
+          >
             <img
               src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=900&q=80"
               alt="Beach Villa"
@@ -166,7 +222,10 @@ interface Review { name: string; role: string; text: string; initials: string; }
             </div>
           </a>
 
-          <a routerLink="/rooms/search" class="group relative block h-52 overflow-hidden rounded-2xl md:h-auto">
+          <a
+            routerLink="/rooms/search"
+            class="group relative block h-52 overflow-hidden rounded-2xl md:h-auto"
+          >
             <img
               src="https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=900&q=80"
               alt="Ocean Suite"
@@ -186,7 +245,9 @@ interface Review { name: string; role: string; text: string; initials: string; }
     <section class="border-y border-zinc-100 bg-white py-12 px-6">
       <div class="mx-auto max-w-6xl flex flex-wrap items-center justify-center gap-x-12 gap-y-5">
         <div class="flex items-center gap-2.5 text-sm font-medium text-zinc-500">
-          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true">pool</span>
+          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true"
+            >pool</span
+          >
           Infinity Pool
         </div>
         <div class="flex items-center gap-2.5 text-sm font-medium text-zinc-500">
@@ -194,15 +255,21 @@ interface Review { name: string; role: string; text: string; initials: string; }
           Luxury Spa
         </div>
         <div class="flex items-center gap-2.5 text-sm font-medium text-zinc-500">
-          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true">restaurant</span>
+          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true"
+            >restaurant</span
+          >
           Fine Dining
         </div>
         <div class="flex items-center gap-2.5 text-sm font-medium text-zinc-500">
-          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true">surfing</span>
+          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true"
+            >surfing</span
+          >
           Water Sports
         </div>
         <div class="flex items-center gap-2.5 text-sm font-medium text-zinc-500">
-          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true">directions_boat</span>
+          <span class="material-icons-outlined text-2xl text-cyan-400" aria-hidden="true"
+            >directions_boat</span
+          >
           Private Transfer
         </div>
       </div>
@@ -211,8 +278,12 @@ interface Review { name: string; role: string; text: string; initials: string; }
     <!-- ─── PACKAGES ─── -->
     <section class="bg-white py-24 px-6">
       <div class="mx-auto max-w-6xl">
-        <p class="text-center text-xs font-bold uppercase tracking-[0.32em] text-cyan-500">#Our Packages</p>
-        <h2 class="mt-4 text-center text-3xl font-bold tracking-tight text-zinc-900 md:text-[2.5rem]">
+        <p class="text-center text-xs font-bold uppercase tracking-[0.32em] text-cyan-500">
+          #Our Packages
+        </p>
+        <h2
+          class="mt-4 text-center text-3xl font-bold tracking-tight text-zinc-900 md:text-[2.5rem]"
+        >
           Exceptional stay packages for every traveller
         </h2>
         <p class="mt-3 mx-auto max-w-xl text-center text-[15px] leading-7 text-zinc-500">
@@ -220,31 +291,46 @@ interface Review { name: string; role: string; text: string; initials: string; }
         </p>
 
         <!-- Asymmetric: featured (col-span-2, row-span-2) + 2 stacked -->
-        <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3" style="grid-template-rows: auto auto;">
+        <div
+          class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3"
+          style="grid-template-rows: auto auto;"
+        >
           <!-- Honeymoon — featured large -->
-          <div class="group relative overflow-hidden rounded-2xl md:col-span-2 md:row-span-2" style="min-height: 500px;">
+          <div
+            class="group relative overflow-hidden rounded-2xl md:col-span-2 md:row-span-2"
+            style="min-height: 500px;"
+          >
             <img
               src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1100&q=80"
               alt="Honeymoon Escape"
               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent"
+            ></div>
             <div class="absolute inset-0 flex flex-col justify-between p-8">
-              <span class="self-start rounded-full bg-cyan-500 px-3.5 py-1 text-xs font-bold text-white">5 nights</span>
+              <span
+                class="self-start rounded-full bg-cyan-500 px-3.5 py-1 text-xs font-bold text-white"
+                >5 nights</span
+              >
               <div>
                 <p class="text-2xl font-bold text-white">Honeymoon Escape</p>
                 <p class="mt-2 max-w-sm text-[14px] leading-6 text-white/60">
-                  Private overwater villa, sunset dinner above the lagoon, couples spa ritual & guided reef snorkel.
+                  Private overwater villa, sunset dinner above the lagoon, couples spa ritual &
+                  guided reef snorkel.
                 </p>
                 <div class="mt-6 flex items-center justify-between">
                   <div>
                     <p class="text-[11px] text-white/45">From</p>
-                    <p class="text-xl font-bold text-white">$1,200 <span class="text-sm font-normal text-white/45">/ night</span></p>
+                    <p class="text-xl font-bold text-white">
+                      $1,200 <span class="text-sm font-normal text-white/45">/ night</span>
+                    </p>
                   </div>
                   <a
                     routerLink="/rooms/search"
                     class="rounded-full border border-white/35 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-                  >Book now</a>
+                    >Book now</a
+                  >
                 </div>
               </div>
             </div>
@@ -257,14 +343,25 @@ interface Review { name: string; role: string; text: string; initials: string; }
               alt="Ocean Adventure"
               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/88 via-zinc-950/15 to-transparent"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-zinc-950/88 via-zinc-950/15 to-transparent"
+            ></div>
             <div class="absolute inset-0 flex flex-col justify-between p-5">
-              <span class="self-start rounded-full bg-cyan-500 px-3 py-1 text-xs font-bold text-white">7 nights</span>
+              <span
+                class="self-start rounded-full bg-cyan-500 px-3 py-1 text-xs font-bold text-white"
+                >7 nights</span
+              >
               <div>
                 <p class="font-bold text-white text-lg">Ocean Adventure</p>
                 <div class="mt-2 flex items-center justify-between">
-                  <p class="font-semibold text-white">$900 <span class="text-[11px] font-normal text-white/45">/night</span></p>
-                  <a routerLink="/rooms/search" class="rounded-full border border-white/35 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/15">Book now</a>
+                  <p class="font-semibold text-white">
+                    $900 <span class="text-[11px] font-normal text-white/45">/night</span>
+                  </p>
+                  <a
+                    routerLink="/rooms/search"
+                    class="rounded-full border border-white/35 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/15"
+                    >Book now</a
+                  >
                 </div>
               </div>
             </div>
@@ -277,14 +374,25 @@ interface Review { name: string; role: string; text: string; initials: string; }
               alt="Family Getaway"
               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/88 via-zinc-950/15 to-transparent"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-zinc-950/88 via-zinc-950/15 to-transparent"
+            ></div>
             <div class="absolute inset-0 flex flex-col justify-between p-5">
-              <span class="self-start rounded-full bg-cyan-500 px-3 py-1 text-xs font-bold text-white">4 nights</span>
+              <span
+                class="self-start rounded-full bg-cyan-500 px-3 py-1 text-xs font-bold text-white"
+                >4 nights</span
+              >
               <div>
                 <p class="font-bold text-white text-lg">Family Getaway</p>
                 <div class="mt-2 flex items-center justify-between">
-                  <p class="font-semibold text-white">$750 <span class="text-[11px] font-normal text-white/45">/night</span></p>
-                  <a routerLink="/rooms/search" class="rounded-full border border-white/35 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/15">Book now</a>
+                  <p class="font-semibold text-white">
+                    $750 <span class="text-[11px] font-normal text-white/45">/night</span>
+                  </p>
+                  <a
+                    routerLink="/rooms/search"
+                    class="rounded-full border border-white/35 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/15"
+                    >Book now</a
+                  >
                 </div>
               </div>
             </div>
@@ -298,11 +406,14 @@ interface Review { name: string; role: string; text: string; initials: string; }
       <div class="mx-auto max-w-6xl grid grid-cols-1 gap-16 md:grid-cols-2 items-start">
         <div>
           <p class="text-xs font-bold uppercase tracking-[0.32em] text-cyan-500">#FAQs</p>
-          <h2 class="mt-4 text-3xl font-bold tracking-tight text-zinc-900 leading-tight md:text-[2.5rem]">
+          <h2
+            class="mt-4 text-3xl font-bold tracking-tight text-zinc-900 leading-tight md:text-[2.5rem]"
+          >
             Frequently Asked Questions
           </h2>
           <p class="mt-5 text-[15px] leading-7 text-zinc-500">
-            We believe in clear, honest communication. Here are the questions we hear most from our guests.
+            We believe in clear, honest communication. Here are the questions we hear most from our
+            guests.
           </p>
         </div>
         <div class="divide-y divide-zinc-100">
@@ -318,7 +429,8 @@ interface Review { name: string; role: string; text: string; initials: string; }
                   class="material-icons-outlined shrink-0 text-xl text-zinc-400 transition-transform duration-200"
                   [style.transform]="openFaq() === i ? 'rotate(180deg)' : 'rotate(0deg)'"
                   aria-hidden="true"
-                >expand_more</span>
+                  >expand_more</span
+                >
               </button>
               @if (openFaq() === i) {
                 <p class="mt-3 text-[14px] leading-6 text-zinc-500">{{ faq.a }}</p>
@@ -332,8 +444,12 @@ interface Review { name: string; role: string; text: string; initials: string; }
     <!-- ─── REVIEWS ─── -->
     <section class="bg-white py-24 px-6">
       <div class="mx-auto max-w-6xl">
-        <p class="text-center text-xs font-bold uppercase tracking-[0.32em] text-cyan-500">#Reviews</p>
-        <h2 class="mt-4 text-center text-3xl font-bold tracking-tight text-zinc-900 md:text-[2.5rem]">
+        <p class="text-center text-xs font-bold uppercase tracking-[0.32em] text-cyan-500">
+          #Reviews
+        </p>
+        <h2
+          class="mt-4 text-center text-3xl font-bold tracking-tight text-zinc-900 md:text-[2.5rem]"
+        >
           Your trusted partner in paradise
         </h2>
         <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -341,12 +457,18 @@ interface Review { name: string; role: string; text: string; initials: string; }
             <div class="rounded-2xl border border-zinc-100 bg-zinc-50 p-7">
               <div class="mb-4 flex gap-0.5">
                 @for (s of [1, 2, 3, 4, 5]; track s) {
-                  <span class="material-icons-outlined text-[16px] text-amber-400" aria-hidden="true">star</span>
+                  <span
+                    class="material-icons-outlined text-[16px] text-amber-400"
+                    aria-hidden="true"
+                    >star</span
+                  >
                 }
               </div>
               <p class="text-[15px] leading-7 text-zinc-600">"{{ r.text }}"</p>
               <div class="mt-5 flex items-center gap-3">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-sm font-bold text-cyan-700">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-sm font-bold text-cyan-700"
+                >
                   {{ r.initials }}
                 </div>
                 <div>
@@ -374,7 +496,8 @@ interface Review { name: string; role: string; text: string; initials: string; }
           Don't wait any longer.<br />Start your Maldives adventure today.
         </h2>
         <p class="mt-5 text-[15px] leading-7 text-white/60">
-          Book directly and enjoy our best-rate guarantee, exclusive perks, and personalised pre-arrival concierge.
+          Book directly and enjoy our best-rate guarantee, exclusive perks, and personalised
+          pre-arrival concierge.
         </p>
         <div class="mt-8 flex flex-wrap justify-center gap-3">
           <a
@@ -387,7 +510,8 @@ interface Review { name: string; role: string; text: string; initials: string; }
           <a
             routerLink="/contact"
             class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-          >Contact Us</a>
+            >Contact Us</a
+          >
         </div>
       </div>
     </section>
@@ -396,17 +520,34 @@ interface Review { name: string; role: string; text: string; initials: string; }
     <footer class="bg-zinc-900 px-6 py-16 text-zinc-400">
       <div class="mx-auto max-w-6xl grid grid-cols-1 gap-10 md:grid-cols-4">
         <div class="md:col-span-2">
-          <div class="flex items-center gap-2 text-lg font-bold text-white">
-            <span class="material-icons-outlined text-cyan-400" aria-hidden="true">apartment</span>
-            Grand Plaza
-          </div>
+          <a
+            routerLink="/"
+            class="relative block h-18 w-20 shrink-0"
+            aria-label="Grand Plaza — home"
+          >
+            <img
+              src="/logo.png"
+              alt=""
+              aria-hidden="true"
+              class="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300"
+            />
+          </a>
           <p class="mt-3 max-w-xs text-[14px] leading-6">
             Personalised luxury from your own private island in the heart of the Indian Ocean.
           </p>
           <div class="mt-5 flex gap-3 text-zinc-500">
-            <span class="material-icons-outlined cursor-pointer text-xl transition-colors hover:text-white">language</span>
-            <span class="material-icons-outlined cursor-pointer text-xl transition-colors hover:text-white">phone</span>
-            <span class="material-icons-outlined cursor-pointer text-xl transition-colors hover:text-white">mail</span>
+            <span
+              class="material-icons-outlined cursor-pointer text-xl transition-colors hover:text-white"
+              >language</span
+            >
+            <span
+              class="material-icons-outlined cursor-pointer text-xl transition-colors hover:text-white"
+              >phone</span
+            >
+            <span
+              class="material-icons-outlined cursor-pointer text-xl transition-colors hover:text-white"
+              >mail</span
+            >
           </div>
         </div>
         <div>
@@ -423,13 +564,17 @@ interface Review { name: string; role: string; text: string; initials: string; }
           <div class="space-y-2.5 text-[14px]">
             <a routerLink="/login" class="block transition-colors hover:text-white">Sign In</a>
             <a routerLink="/register" class="block transition-colors hover:text-white">Register</a>
-            <a routerLink="/rooms/search" class="block transition-colors hover:text-white">Book a Room</a>
+            <a routerLink="/rooms/search" class="block transition-colors hover:text-white"
+              >Book a Room</a
+            >
             <a routerLink="/contact" class="block transition-colors hover:text-white">Support</a>
           </div>
         </div>
       </div>
-      <div class="mx-auto mt-12 max-w-6xl flex flex-wrap items-center justify-between gap-4 border-t border-zinc-800 pt-8 text-xs text-zinc-500">
-        <p>© {{ year }} Grand Plaza Resort & Spa, Maldives. All rights reserved.</p>
+      <div
+        class="mx-auto mt-12 max-w-6xl flex flex-wrap items-center justify-between gap-4 border-t border-zinc-800 pt-8 text-xs text-zinc-500"
+      >
+        <p>© {{ year }} Grand Plaza. All rights reserved.</p>
         <div class="flex gap-6">
           <span class="cursor-pointer transition-colors hover:text-white">Privacy Policy</span>
           <span class="cursor-pointer transition-colors hover:text-white">Terms & Conditions</span>
@@ -493,6 +638,6 @@ export class LandingComponent {
   ];
 
   toggleFaq(i: number): void {
-    this.openFaq.update(v => (v === i ? null : i));
+    this.openFaq.update((v) => (v === i ? null : i));
   }
 }
