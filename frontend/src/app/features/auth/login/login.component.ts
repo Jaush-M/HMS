@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -17,7 +16,6 @@ import { MSG } from '../../../core/i18n/ui-messages';
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
@@ -25,15 +23,37 @@ import { MSG } from '../../../core/i18n/ui-messages';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto flex min-h-[70vh] max-w-md items-center px-4 py-12">
-      <mat-card class="w-full !rounded-2xl !border !border-white/10 !bg-white/5 !shadow-2xl backdrop-blur-md">
-        <mat-card-header>
-          <mat-card-title class="!text-white">{{ msg.loginTitle }}</mat-card-title>
-          <mat-card-subtitle class="!text-white/70">Use your Grand Plaza credentials</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content class="!pt-4">
-          <form class="space-y-4" [formGroup]="form" (ngSubmit)="submit()">
-            <mat-form-field appearance="outline" class="w-full" color="primary">
+    <div class="flex min-h-[calc(100vh-68px)]">
+      <!-- Left: hero image -->
+      <div class="relative hidden flex-1 lg:block">
+        <img
+          src="https://images.unsplash.com/photo-1574223706388-0e0f6f0390b2?h=1200&w=800&auto=format&fit=crop"
+          alt=""
+          aria-hidden="true"
+          class="h-full w-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-zinc-950/75 via-zinc-900/50 to-zinc-800/30"
+        ></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-12">
+          <img
+            src="/logo.png"
+            alt="Grand Plaza"
+            class="mb-6 h-12 w-auto object-contain object-left"
+          />
+          <p class="text-lg font-medium text-white/90">Your home away from home.</p>
+          <p class="mt-1 text-sm text-white/55">Luxury hospitality in the heart of the Maldives.</p>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="flex flex-1 items-center justify-center px-6 py-12 lg:px-12">
+        <div class="w-full max-w-sm">
+          <h1 class="text-2xl font-semibold tracking-tight text-zinc-900">{{ msg.loginTitle }}</h1>
+          <p class="mt-1 text-sm text-zinc-500">Use your Grand Plaza credentials</p>
+
+          <form class="mt-8 space-y-5" [formGroup]="form" (ngSubmit)="submit()">
+            <mat-form-field appearance="outline" class="w-full">
               <mat-label>Email</mat-label>
               <input matInput type="email" formControlName="email" autocomplete="username" />
             </mat-form-field>
@@ -46,23 +66,32 @@ import { MSG } from '../../../core/i18n/ui-messages';
                 autocomplete="current-password"
               />
             </mat-form-field>
-            <mat-checkbox formControlName="remember" class="!text-white/80"
-              >Stay signed in on this device</mat-checkbox
-            >
+            <mat-checkbox formControlName="remember">Stay signed in</mat-checkbox>
             @if (error()) {
-              <p class="text-sm text-rose-300" role="alert">{{ error() }}</p>
+              <p class="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700" role="alert">
+                {{ error() }}
+              </p>
             }
             <app-button variant="primary" class="w-full" [loading]="loading()" type="submit">
               Sign in
             </app-button>
           </form>
-          <p class="mt-4 text-center text-sm text-white/70">
-            <a routerLink="/forgot-password" class="underline hover:text-white">Forgot password?</a>
-            ·
-            <a routerLink="/register" class="underline hover:text-white">Create account</a>
+
+          <p class="mt-6 text-center text-sm text-zinc-500">
+            <a
+              routerLink="/forgot-password"
+              class="font-medium text-zinc-900 underline-offset-4 hover:underline"
+              >Forgot password?</a
+            >
+            <span class="mx-2 text-zinc-300">·</span>
+            <a
+              routerLink="/register"
+              class="font-medium text-zinc-900 underline-offset-4 hover:underline"
+              >Create account</a
+            >
           </p>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
     </div>
   `,
 })

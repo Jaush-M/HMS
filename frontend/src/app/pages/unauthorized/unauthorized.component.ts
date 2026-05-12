@@ -9,13 +9,13 @@ import { AppButtonComponent } from '../../shared/ui/app-button/app-button.compon
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <main
-      class="flex min-h-screen flex-col items-center justify-center gap-4 bg-neutral-50 px-4 text-center dark:bg-neutral-950"
+      class="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-50 px-4 text-center"
     >
-      <p class="text-sm font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400">
+      <p class="text-xs font-semibold uppercase tracking-widest text-zinc-400">
         403
       </p>
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Unauthorized</h1>
-      <p class="max-w-md text-sm text-neutral-600 dark:text-neutral-400">
+      <h1 class="text-2xl font-semibold text-zinc-900">Unauthorized</h1>
+      <p class="max-w-md text-sm text-zinc-600">
         You do not have permission to view this area. Switch accounts or return to your dashboard.
       </p>
       <a routerLink="/app">

@@ -9,16 +9,16 @@ import { AppButtonComponent } from '../app-button/app-button.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      class="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-neutral-300 bg-neutral-50/50 px-6 py-14 text-center dark:border-neutral-700 dark:bg-neutral-900/40"
+      class="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-zinc-300 bg-zinc-50/50 px-6 py-14 text-center"
       role="status"
     >
-      <span class="material-icons-outlined text-4xl text-neutral-400" aria-hidden="true">{{
+      <span class="material-icons-outlined text-4xl text-zinc-400" aria-hidden="true">{{
         icon()
       }}</span>
-      <h3 class="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+      <h3 class="text-base font-semibold text-zinc-900">
         {{ title() }}
       </h3>
-      <p class="max-w-sm text-sm text-neutral-600 dark:text-neutral-400">
+      <p class="max-w-sm text-sm text-zinc-600">
         {{ hint() }}
       </p>
       @if (actionLabel()) {

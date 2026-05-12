@@ -14,7 +14,7 @@ import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.com
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Staff performance</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Staff performance</h1>
       <div class="grid gap-4 sm:grid-cols-3">
         <app-stat-card label="Active shifts" value="12" hint="Mock" />
         <app-stat-card label="Avg handle time" value="4m" />

@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
 import { HotelsApiService } from '../../../core/services/hotels-api.service';
 import { RoomsApiService } from '../../../core/services/rooms-api.service';
 import { environment } from '../../../../environments/environment';
@@ -16,6 +15,7 @@ import { AppCardComponent } from '../../../shared/ui/app-card/app-card.component
 import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.component';
 import { AppEmptyStateComponent } from '../../../shared/ui/app-empty-state/app-empty-state.component';
 import { AppTableComponent } from '../../../shared/ui/app-table/app-table.component';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 
 @Component({
   selector: 'app-room-search',
@@ -28,15 +28,15 @@ import { AppTableComponent } from '../../../shared/ui/app-table/app-table.compon
     MatDatepickerModule,
     MatSelectModule,
     MatTableModule,
-    MatButtonModule,
     AppCardComponent,
     AppLoaderComponent,
     AppEmptyStateComponent,
     AppTableComponent,
+    AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto max-w-6xl space-y-6 px-4 py-12 text-neutral-900 dark:text-neutral-50">
+    <div class="mx-auto max-w-6xl space-y-6 px-4 py-12 text-zinc-900">
       <h1 class="text-3xl font-semibold tracking-tight">Room availability</h1>
       <app-card title="Search">
         <form class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-4" [formGroup]="form" (ngSubmit)="search()">
@@ -65,9 +65,9 @@ import { AppTableComponent } from '../../../shared/ui/app-table/app-table.compon
             <input matInput type="number" formControlName="minCapacity" min="1" />
           </mat-form-field>
           <div class="flex items-end md:col-span-2 lg:col-span-4">
-            <button mat-flat-button color="primary" type="submit" [disabled]="loading()">
+            <app-button variant="primary" type="submit" [disabled]="loading()">
               Search availability
-            </button>
+            </app-button>
           </div>
         </form>
       </app-card>
@@ -101,7 +101,7 @@ import { AppTableComponent } from '../../../shared/ui/app-table/app-table.compon
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let r">
-                <a mat-button color="primary" [routerLink]="['/rooms', r.id]">Details</a>
+                <a [routerLink]="['/rooms', r.id]" class="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline">Details</a>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="cols"></tr>

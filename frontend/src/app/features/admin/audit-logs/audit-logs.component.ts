@@ -3,10 +3,10 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs/operators';
 import { AppTableComponent } from '../../../shared/ui/app-table/app-table.component';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 
 interface AuditRow {
   id: number;
@@ -24,13 +24,13 @@ interface AuditRow {
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
-    MatButtonModule,
     AppTableComponent,
+    AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-4">
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Audit logs</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Audit logs</h1>
       <mat-form-field appearance="outline" class="w-full max-w-md">
         <mat-label>Search</mat-label>
         <input matInput [formControl]="query" placeholder="Actor, action, detail…" />
@@ -58,8 +58,8 @@ interface AuditRow {
         </table>
       </app-table>
       <div class="flex gap-2">
-        <button mat-stroked-button type="button" (click)="exportCsv()">Export CSV</button>
-        <button mat-stroked-button type="button" (click)="exportJson()">Export JSON</button>
+        <app-button variant="secondary" type="button" (clicked)="exportCsv()">Export CSV</app-button>
+        <app-button variant="secondary" type="button" (clicked)="exportJson()">Export JSON</app-button>
       </div>
     </div>
   `,

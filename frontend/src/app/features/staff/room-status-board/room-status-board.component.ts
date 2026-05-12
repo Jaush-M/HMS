@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { HotelsApiService } from '../../../core/services/hotels-api.service';
 import { environment } from '../../../../environments/environment';
 import type { RoomDto } from '../../../core/models/room.models';
@@ -7,17 +6,18 @@ import { ROOM_STATUSES, type RoomStatus } from '../../../core/constants/room-sta
 import { AppCardComponent } from '../../../shared/ui/app-card/app-card.component';
 import { AppBadgeComponent } from '../../../shared/ui/app-badge/app-badge.component';
 import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.component';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 
 @Component({
   selector: 'app-room-status-board',
   standalone: true,
-  imports: [MatButtonModule, AppCardComponent, AppBadgeComponent, AppLoaderComponent],
+  imports: [AppCardComponent, AppBadgeComponent, AppLoaderComponent, AppButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3">
-        <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Room status</h1>
-        <button mat-stroked-button type="button" (click)="reload()">Refresh</button>
+        <h1 class="text-2xl font-semibold text-zinc-900">Room status</h1>
+        <app-button variant="secondary" type="button" (clicked)="reload()">Refresh</app-button>
       </div>
       @if (loading()) {
         <app-loader caption="Loading rooms…" />
@@ -28,7 +28,7 @@ import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.com
               <div class="mt-3 space-y-2">
                 @for (r of roomRows(st); track r.id) {
                   <div
-                    class="flex items-center justify-between rounded-lg border border-neutral-200/80 bg-neutral-50 px-2 py-2 text-xs dark:border-neutral-800 dark:bg-neutral-900/60"
+                    class="flex items-center justify-between rounded-lg border border-zinc-200/80 bg-zinc-50 px-2 py-2 text-xs"
                   >
                     <span class="font-medium">{{ r.roomNumber }}</span>
                     <app-badge tone="neutral">{{ r.type }}</app-badge>

@@ -14,7 +14,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     >
       <mat-spinner [diameter]="diameter()" />
       @if (caption()) {
-        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ caption() }}</p>
+        <p class="text-sm text-zinc-500">{{ caption() }}</p>
       }
     </div>
   `,

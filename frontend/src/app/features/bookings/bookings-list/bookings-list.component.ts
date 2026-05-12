@@ -17,7 +17,7 @@ import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.com
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-4">
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Bookings</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Bookings</h1>
       <app-card title="Directory">
         @if (loading()) {
           <app-loader />

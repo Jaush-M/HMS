@@ -23,7 +23,7 @@ import type { BookingDto } from '../../../core/models/booking.models';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1 class="mb-4 text-2xl font-semibold text-neutral-900 dark:text-white">Check-in</h1>
+    <h1 class="mb-4 text-2xl font-semibold text-zinc-900">Check-in</h1>
     <mat-stepper linear>
       <mat-step [stepControl]="lookupForm" label="Lookup">
         <form [formGroup]="lookupForm" class="space-y-4 py-4">
@@ -32,7 +32,7 @@ import type { BookingDto } from '../../../core/models/booking.models';
             <input matInput type="number" formControlName="bookingId" />
           </mat-form-field>
           <div>
-            <button mat-flat-button color="primary" type="button" matStepperNext (click)="loadBooking()">
+            <button mat-flat-button class="!bg-zinc-900 !text-white" type="button" matStepperNext (click)="loadBooking()">
               Load booking
             </button>
           </div>
@@ -40,7 +40,7 @@ import type { BookingDto } from '../../../core/models/booking.models';
       </mat-step>
       <mat-step [stepControl]="verifyForm" label="Verify">
         @if (booking(); as b) {
-          <div class="space-y-2 py-4 text-sm text-neutral-700 dark:text-neutral-200">
+          <div class="space-y-2 py-4 text-sm text-zinc-700">
             <p><strong>Guest:</strong> {{ b.guestName }}</p>
             <p><strong>Hotel:</strong> {{ b.hotelName }}</p>
             <p><strong>Status:</strong> {{ b.status }}</p>
@@ -55,19 +55,19 @@ import type { BookingDto } from '../../../core/models/booking.models';
         </form>
         <div class="flex justify-between">
           <button mat-button matStepperPrevious type="button">Back</button>
-          <button mat-flat-button color="primary" matStepperNext type="button" [disabled]="verifyForm.invalid">
+          <button mat-flat-button class="!bg-zinc-900 !text-white" matStepperNext type="button" [disabled]="verifyForm.invalid">
             Next
           </button>
         </div>
       </mat-step>
       <mat-step label="Room & keys">
-        <p class="py-4 text-sm text-neutral-600 dark:text-neutral-300">
+        <p class="py-4 text-sm text-zinc-600">
           Room assignment follows hotel PMS rules. Placeholder confirms key packet prepared.
         </p>
         <mat-checkbox [checked]="keyReady()" (change)="keyReady.set($event.checked)">Key cards encoded</mat-checkbox>
         <div class="mt-6 flex justify-between">
           <button mat-button matStepperPrevious type="button">Back</button>
-          <button mat-flat-button color="primary" type="button" [disabled]="submitting()" (click)="submit()">
+          <button mat-flat-button class="!bg-zinc-900 !text-white" type="button" [disabled]="submitting()" (click)="submit()">
             Complete check-in
           </button>
         </div>

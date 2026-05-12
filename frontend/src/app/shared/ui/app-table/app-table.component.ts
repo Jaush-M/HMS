@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      class="overflow-x-auto rounded-xl border border-neutral-200/80 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
+      class="overflow-x-auto rounded-xl border border-zinc-200/80 bg-white shadow-sm"
     >
       <ng-content />
     </div>

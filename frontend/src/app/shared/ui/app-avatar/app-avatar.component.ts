@@ -16,9 +16,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 })
 export class AppAvatarComponent {
   name = input.required<string>();
-  toneClass = input(
-    'bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500',
-  );
+  toneClass = input('bg-gradient-to-br from-zinc-700 to-zinc-900');
 
   readonly initials = computed(() => {
     const parts = this.name().trim().split(/\s+/).filter(Boolean);

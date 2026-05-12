@@ -16,14 +16,14 @@ export interface ConfirmDialogData {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h2 mat-dialog-title>{{ data.title }}</h2>
-    <mat-dialog-content class="!max-w-md text-sm text-neutral-600 dark:text-neutral-300">
+    <mat-dialog-content class="!max-w-md text-sm text-zinc-600">
       {{ data.message }}
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button type="button" (click)="ref.close(false)">
         {{ data.cancelLabel ?? 'Cancel' }}
       </button>
-      <button mat-flat-button color="primary" type="button" (click)="ref.close(true)">
+      <button mat-flat-button class="!bg-zinc-900 !text-white" type="button" (click)="ref.close(true)">
         {{ data.confirmLabel ?? 'Confirm' }}
       </button>
     </mat-dialog-actions>

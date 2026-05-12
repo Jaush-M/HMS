@@ -24,7 +24,7 @@ import type { InvoiceDto } from '../../../core/models/invoice.models';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1 class="mb-4 text-2xl font-semibold text-neutral-900 dark:text-white">Check-out</h1>
+    <h1 class="mb-4 text-2xl font-semibold text-zinc-900">Check-out</h1>
     <mat-stepper linear>
       <mat-step [stepControl]="lookupForm" label="Booking">
         <form [formGroup]="lookupForm" class="space-y-4 py-4">
@@ -32,7 +32,7 @@ import type { InvoiceDto } from '../../../core/models/invoice.models';
             <mat-label>Booking ID</mat-label>
             <input matInput type="number" formControlName="bookingId" />
           </mat-form-field>
-          <button mat-flat-button color="primary" type="button" matStepperNext (click)="load()">Load</button>
+          <button mat-flat-button class="!bg-zinc-900 !text-white" type="button" matStepperNext (click)="load()">Load</button>
         </form>
       </mat-step>
       <mat-step label="Invoice & extras">
@@ -50,7 +50,7 @@ import type { InvoiceDto } from '../../../core/models/invoice.models';
           </mat-list>
           <p class="text-sm font-semibold">Total £{{ inv.totalAmount }}</p>
         } @else {
-          <p class="text-sm text-neutral-500">No invoice on file for this booking.</p>
+          <p class="text-sm text-zinc-500">No invoice on file for this booking.</p>
         }
         <form [formGroup]="extrasForm" class="mt-4 space-y-3">
           <mat-form-field appearance="outline" class="w-full max-w-sm">
@@ -60,16 +60,16 @@ import type { InvoiceDto } from '../../../core/models/invoice.models';
         </form>
         <div class="flex justify-between">
           <button mat-button matStepperPrevious type="button">Back</button>
-          <button mat-flat-button color="primary" matStepperNext type="button">Payment</button>
+          <button mat-flat-button class="!bg-zinc-900 !text-white" matStepperNext type="button">Payment</button>
         </div>
       </mat-step>
       <mat-step label="Settle">
-        <p class="py-4 text-sm text-neutral-600 dark:text-neutral-300">
+        <p class="py-4 text-sm text-zinc-600">
           Card capture UI placeholder — in production this connects to your payment gateway.
         </p>
         <div class="flex justify-between">
           <button mat-button matStepperPrevious type="button">Back</button>
-          <button mat-flat-button color="primary" type="button" [disabled]="submitting()" (click)="checkout()">
+          <button mat-flat-button class="!bg-zinc-900 !text-white" type="button" [disabled]="submitting()" (click)="checkout()">
             Complete check-out
           </button>
         </div>

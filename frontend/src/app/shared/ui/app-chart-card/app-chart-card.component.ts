@@ -9,9 +9,9 @@ import type { ChartConfiguration } from 'chart.js';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section
-      class="rounded-xl border border-neutral-200/80 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
+      class="rounded-xl border border-zinc-200/80 bg-white p-4 shadow-sm"
     >
-      <h3 class="mb-4 text-sm font-semibold text-neutral-900 dark:text-neutral-50">
+      <h3 class="mb-4 text-sm font-semibold text-zinc-900">
         {{ title() }}
       </h3>
       <div class="h-64">

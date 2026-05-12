@@ -2,7 +2,6 @@ import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../core/auth/auth.service';
 import { BookingsApiService } from '../../../core/services/bookings-api.service';
 import type { BookingDto } from '../../../core/models/booking.models';
@@ -11,6 +10,7 @@ import { AppStatCardComponent } from '../../../shared/ui/app-stat-card/app-stat-
 import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.component';
 import { AppEmptyStateComponent } from '../../../shared/ui/app-empty-state/app-empty-state.component';
 import { AppTableComponent } from '../../../shared/ui/app-table/app-table.component';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 
 @Component({
   selector: 'app-guest-dashboard',
@@ -19,21 +19,21 @@ import { AppTableComponent } from '../../../shared/ui/app-table/app-table.compon
     SlicePipe,
     RouterLink,
     MatTableModule,
-    MatButtonModule,
     AppCardComponent,
     AppStatCardComponent,
     AppLoaderComponent,
     AppEmptyStateComponent,
     AppTableComponent,
+    AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
       <div>
-        <h1 class="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-white">
+        <h1 class="text-2xl font-semibold tracking-tight text-zinc-900">
           Welcome back, {{ auth.fullName() }}
         </h1>
-        <p class="text-sm text-neutral-500 dark:text-neutral-400">Here is your stay snapshot.</p>
+        <p class="text-sm text-zinc-500">Here is your stay snapshot.</p>
       </div>
       <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <app-stat-card label="Upcoming stays" [value]="upcoming().toString()" hint="Confirmed forward" />
@@ -42,11 +42,11 @@ import { AppTableComponent } from '../../../shared/ui/app-table/app-table.compon
         <app-stat-card label="Programme tier" value="Gold" hint="Grand Rewards" />
       </div>
       <div class="flex flex-wrap gap-3">
-        <a routerLink="/app/guest/booking">
-          <button mat-flat-button color="primary" type="button">New booking</button>
+        <a routerLink="/app/guest/booking" class="inline-block">
+          <app-button variant="primary" type="button">New booking</app-button>
         </a>
-        <a routerLink="/app/guest/profile">
-          <button mat-stroked-button type="button">Profile</button>
+        <a routerLink="/app/guest/profile" class="inline-block">
+          <app-button variant="secondary" type="button">Profile</app-button>
         </a>
       </div>
       <app-card title="Bookings">

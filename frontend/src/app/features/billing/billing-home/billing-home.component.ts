@@ -17,7 +17,7 @@ interface InvoiceRow {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-4">
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Billing</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Billing</h1>
       <app-card title="Recent invoices (mock)">
         <app-table>
           <table mat-table [dataSource]="rows()" class="w-full">

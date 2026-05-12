@@ -10,7 +10,7 @@ import { AppEmptyStateComponent } from '../../shared/ui/app-empty-state/app-empt
   imports: [AppCardComponent, AppLoaderComponent, AppEmptyStateComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto max-w-4xl space-y-6 px-4 py-12 text-neutral-900 dark:text-neutral-50">
+    <div class="mx-auto max-w-4xl space-y-6 px-4 py-12 text-zinc-900">
       <h1 class="text-3xl font-semibold tracking-tight">Our hotels</h1>
       @if (loading()) {
         <app-loader caption="Loading properties…" />
@@ -20,7 +20,7 @@ import { AppEmptyStateComponent } from '../../shared/ui/app-empty-state/app-empt
         <div class="grid gap-4 md:grid-cols-2">
           @for (h of hotels(); track h.id) {
             <app-card [title]="h.name">
-              <p class="text-sm text-neutral-600 dark:text-neutral-300">
+              <p class="text-sm text-zinc-600">
                 {{ h.city }}, {{ h.country }}
               </p>
             </app-card>

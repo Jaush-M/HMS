@@ -1,11 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -39,7 +33,7 @@ import { ShellFooterComponent } from '../footer/shell-footer.component';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div class="flex min-h-screen bg-zinc-50">
       @if (isHandset() && mobileNavOpen()) {
         <div
           class="fixed inset-0 z-30 bg-black/40"
@@ -48,7 +42,7 @@ import { ShellFooterComponent } from '../footer/shell-footer.component';
         ></div>
       }
       <div
-        class="shrink-0 border-r border-neutral-200/80 bg-white dark:border-neutral-800 dark:bg-neutral-950"
+        class="shrink-0 border-r border-zinc-200/80 bg-white"
         [class.hidden]="isHandset() && !mobileNavOpen()"
         [class.fixed]="isHandset()"
         [class.z-40]="isHandset()"
@@ -62,7 +56,7 @@ import { ShellFooterComponent } from '../footer/shell-footer.component';
       </div>
       <div class="flex min-w-0 flex-1 flex-col">
         <header
-          class="flex h-14 items-center justify-between gap-3 border-b border-neutral-200/80 bg-white/90 px-3 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90 md:px-4"
+          class="flex h-14 items-center justify-between gap-3 border-b border-zinc-200/80 bg-white/90 px-3 backdrop-blur md:px-4"
         >
           <div class="flex min-w-0 flex-1 items-center gap-2">
             @if (isHandset()) {
@@ -84,6 +78,7 @@ import { ShellFooterComponent } from '../footer/shell-footer.component';
               mat-icon-button
               type="button"
               aria-label="Open notifications"
+              class="flex items-center"
               (click)="notifOpen.update((v) => !v)"
             >
               <span class="material-icons-outlined">notifications</span>
@@ -92,16 +87,11 @@ import { ShellFooterComponent } from '../footer/shell-footer.component';
               mat-icon-button
               type="button"
               [matMenuTriggerFor]="accountMenu"
-              [attr.aria-label]="'Account menu for ' + (auth.fullName() ?? 'User')"
+              class="relative flex items-center justify-center p-0"
             >
-              <app-avatar [name]="auth.fullName() ?? 'User'" />
+              <app-avatar class="absolute inset-0" [name]="auth.fullName() ?? 'User'"></app-avatar>
             </button>
             <mat-menu #accountMenu="matMenu">
-              <button mat-menu-item type="button" (click)="theme.toggleLightDark()">
-                <span class="material-icons-outlined mr-2 align-middle text-[18px]">dark_mode</span>
-                Toggle theme
-              </button>
-              <mat-divider />
               <button mat-menu-item type="button" (click)="auth.logout()">Sign out</button>
             </mat-menu>
           </div>
@@ -118,16 +108,14 @@ import { ShellFooterComponent } from '../footer/shell-footer.component';
           (click)="notifOpen.set(false)"
         ></div>
         <aside
-          class="fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-neutral-200 bg-white shadow-xl dark:border-neutral-800 dark:bg-neutral-900"
+          class="fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-zinc-200 bg-white shadow-xl"
           aria-label="Notifications"
         >
-          <div
-            class="flex items-center justify-between border-b border-neutral-200 px-4 py-3 dark:border-neutral-800"
-          >
-            <h2 class="text-sm font-semibold">Notifications</h2>
+          <div class="flex items-center justify-between border-b border-zinc-200 px-4 py-3">
+            <h2 class="text-sm font-semibold text-zinc-900">Notifications</h2>
             <button
               type="button"
-              class="rounded p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              class="rounded p-1 text-zinc-500 hover:bg-zinc-100"
               (click)="notifOpen.set(false)"
               aria-label="Close notifications"
             >
@@ -137,7 +125,7 @@ import { ShellFooterComponent } from '../footer/shell-footer.component';
           <mat-nav-list>
             <a mat-list-item>
               <span matListItemTitle class="text-sm">Front desk</span>
-              <span matListItemLine class="text-xs text-neutral-500">No critical alerts</span>
+              <span matListItemLine class="text-xs text-zinc-500">No critical alerts</span>
             </a>
           </mat-nav-list>
         </aside>
@@ -183,12 +171,13 @@ export class DashboardLayoutComponent {
     const path = this.router.url.split('?')[0] ?? '';
     const segments = path.split('/').filter(Boolean);
     if (segments[0] === 'app') {
-      const crumbs: BreadcrumbItem[] = [root, { label: 'Workspace', link: ['/app'] }];
+      const crumbs: BreadcrumbItem[] = [{ label: 'Dashboard', link: ['/app'] }];
       let acc = '/app';
       for (let i = 1; i < segments.length; i++) {
         acc += '/' + segments[i];
         const raw = segments[i]!;
         const label = raw.replace(/-/g, ' ');
+        if (['guest', 'dashboard'].includes(label.toLocaleLowerCase())) continue;
         crumbs.push({
           label: label.charAt(0).toUpperCase() + label.slice(1),
           link: [acc],

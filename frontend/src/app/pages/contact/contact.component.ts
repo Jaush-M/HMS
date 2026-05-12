@@ -18,9 +18,9 @@ import { NotificationService } from '../../core/services/notification.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto max-w-xl px-4 py-12 text-neutral-900 dark:text-neutral-50">
+    <div class="mx-auto max-w-xl px-4 py-12 text-zinc-900">
       <h1 class="text-3xl font-semibold tracking-tight">Contact concierge</h1>
-      <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+      <p class="mt-2 text-sm text-zinc-600">
         For partnership inquiries and group bookings. This form is front-end only for now.
       </p>
       <app-card title="Send a message" class="mt-6 block">

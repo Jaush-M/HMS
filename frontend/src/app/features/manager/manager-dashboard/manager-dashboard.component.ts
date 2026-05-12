@@ -3,12 +3,12 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatButtonModule } from '@angular/material/button';
 import { ReportsApiService } from '../../../core/services/reports-api.service';
 import { environment } from '../../../../environments/environment';
 import type { OccupancyReportDto, RevenueReportDto } from '../../../core/models/report.models';
 import { AppStatCardComponent } from '../../../shared/ui/app-stat-card/app-stat-card.component';
 import { AppChartCardComponent } from '../../../shared/ui/app-chart-card/app-chart-card.component';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 import type { ChartConfiguration } from 'chart.js';
 
 @Component({
@@ -19,14 +19,14 @@ import type { ChartConfiguration } from 'chart.js';
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    MatButtonModule,
     AppStatCardComponent,
     AppChartCardComponent,
+    AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Management dashboard</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Management dashboard</h1>
       <form [formGroup]="range" class="flex flex-wrap items-end gap-3">
         <mat-form-field appearance="outline">
           <mat-label>From</mat-label>
@@ -40,7 +40,7 @@ import type { ChartConfiguration } from 'chart.js';
           <mat-datepicker-toggle matIconSuffix [for]="t" />
           <mat-datepicker #t />
         </mat-form-field>
-        <button mat-flat-button color="primary" type="button" (click)="load()">Apply range</button>
+        <app-button variant="primary" type="button" (clicked)="load()">Apply range</app-button>
       </form>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <app-stat-card label="Occupancy" [value]="occPct()" hint="Selected window" />
@@ -54,7 +54,7 @@ import type { ChartConfiguration } from 'chart.js';
           <app-chart-card title="Occupancy trend (sample)" [type]="'line'" [data]="occChartData()" />
         </div>
       } @placeholder {
-        <p class="text-sm text-neutral-500">Preparing charts…</p>
+        <p class="text-sm text-zinc-500">Preparing charts…</p>
       }
     </div>
   `,

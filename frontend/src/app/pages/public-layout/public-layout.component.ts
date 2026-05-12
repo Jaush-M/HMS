@@ -32,7 +32,7 @@ import { roleDashboardPath } from '../../core/constants/roles';
           <!-- Logo -->
           <a
             routerLink="/"
-            class="relative block h-18 w-20 shrink-0"
+            class="relative block h-17 w-17 shrink-0"
             aria-label="Grand Plaza — home"
           >
             <img

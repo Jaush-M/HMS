@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MockAdminDataService, type MockAdminUser } from '../../../core/services/mock-admin-data.service';
 import { DialogService } from '../../../core/services/dialog.service';
@@ -9,24 +8,25 @@ import type { UserRole } from '../../../core/constants/roles';
 import { AppTableComponent } from '../../../shared/ui/app-table/app-table.component';
 import { AppPaginationComponent } from '../../../shared/ui/app-pagination/app-pagination.component';
 import { AppBadgeComponent } from '../../../shared/ui/app-badge/app-badge.component';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
   imports: [
     MatTableModule,
-    MatButtonModule,
     MatDialogModule,
     AppTableComponent,
     AppPaginationComponent,
     AppBadgeComponent,
+    AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3">
-        <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">User management</h1>
-        <button mat-flat-button color="primary" type="button" (click)="addUser()">Add user</button>
+        <h1 class="text-2xl font-semibold text-zinc-900">User management</h1>
+        <app-button variant="primary" type="button" (clicked)="addUser()">Add user</app-button>
       </div>
       <app-table>
         <table mat-table [dataSource]="paged()" class="w-full">
@@ -50,11 +50,13 @@ import { AppBadgeComponent } from '../../../shared/ui/app-badge/app-badge.compon
           </ng-container>
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let u">
-              <button mat-button type="button" (click)="toggle(u)">
+            <td mat-cell *matCellDef="let u" class="flex gap-1">
+              <button type="button" (click)="toggle(u)" class="rounded px-2 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-100">
                 {{ u.active ? 'Deactivate' : 'Activate' }}
               </button>
-              <button mat-button color="warn" type="button" (click)="remove(u)">Remove</button>
+              <button type="button" (click)="remove(u)" class="rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50">
+                Remove
+              </button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="cols"></tr>

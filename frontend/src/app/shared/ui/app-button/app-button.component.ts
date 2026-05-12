@@ -18,7 +18,7 @@ import {
       [attr.type]="type()"
       [disabled]="disabled()"
       (click)="clicked.emit($event)"
-      class="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50"
+      class="inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all disabled:pointer-events-none disabled:opacity-50"
       [ngClass]="classes()"
     >
       @if (loading()) {
@@ -41,11 +41,11 @@ export class AppButtonComponent {
   readonly classes = computed(() => {
     switch (this.variant()) {
       case 'secondary':
-        return 'border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800';
+        return 'border border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 active:scale-[0.98]';
       case 'ghost':
-        return 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800';
+        return 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 active:scale-[0.98]';
       default:
-        return 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400';
+        return 'bg-zinc-900 text-white hover:bg-zinc-800 active:scale-[0.98]';
     }
   });
 }

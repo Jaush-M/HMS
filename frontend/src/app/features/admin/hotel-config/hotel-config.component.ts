@@ -3,8 +3,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { NotificationService } from '../../../core/services/notification.service';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 
 @Component({
   selector: 'app-hotel-config',
@@ -14,11 +14,11 @@ import { NotificationService } from '../../../core/services/notification.service
     MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
+    AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h1 class="mb-4 text-2xl font-semibold text-neutral-900 dark:text-white">Hotel configuration</h1>
+    <h1 class="mb-4 text-2xl font-semibold text-zinc-900">Hotel configuration</h1>
     <mat-accordion multi>
       <mat-expansion-panel [expanded]="true">
         <mat-expansion-panel-header>Room types</mat-expansion-panel-header>
@@ -35,19 +35,19 @@ import { NotificationService } from '../../../core/services/notification.service
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>Taxes & fees</mat-expansion-panel-header>
-        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+        <p class="text-sm text-zinc-600">
           VAT and city tax rules — mock until configuration API ships.
         </p>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>Policies</mat-expansion-panel-header>
-        <textarea class="w-full rounded-lg border border-neutral-200 bg-white p-3 text-sm dark:border-neutral-700 dark:bg-neutral-900" rows="4">
+        <textarea class="w-full rounded-lg border border-zinc-200 bg-white p-3 text-sm" rows="4">
 Late checkout subject to availability. Quiet hours 22:00–07:00.</textarea
         >
       </mat-expansion-panel>
     </mat-accordion>
     <div class="mt-4">
-      <button mat-flat-button color="primary" type="button" (click)="save()">Save draft</button>
+      <app-button variant="primary" type="button" (clicked)="save()">Save draft</app-button>
     </div>
   `,
 })

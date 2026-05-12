@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../core/auth/auth.service';
 import { UsersApiService } from '../../../core/services/users-api.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { AppCardComponent } from '../../../shared/ui/app-card/app-card.component';
 import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.component';
+import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 
 @Component({
   selector: 'app-guest-profile',
@@ -16,14 +16,14 @@ import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.com
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     AppCardComponent,
     AppLoaderComponent,
+    AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="mx-auto max-w-xl space-y-6">
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Profile</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Profile</h1>
       @if (loading()) {
         <app-loader />
       } @else {
@@ -45,13 +45,13 @@ import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.com
               <mat-label>Address</mat-label>
               <textarea matInput rows="3" formControlName="address"></textarea>
             </mat-form-field>
-            <button mat-flat-button color="primary" type="submit" [disabled]="saving() || form.invalid">
+            <app-button variant="primary" type="submit" [disabled]="saving() || form.invalid" [loading]="saving()">
               Save changes
-            </button>
+            </app-button>
           </form>
         </app-card>
         <app-card title="Saved preferences (mock)">
-          <p class="text-sm text-neutral-600 dark:text-neutral-400">
+          <p class="text-sm text-zinc-600">
             Late check-out, high floor, hypoallergenic pillows — wire to API when guest preferences exist.
           </p>
         </app-card>

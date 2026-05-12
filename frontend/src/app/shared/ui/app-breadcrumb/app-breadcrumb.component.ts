@@ -12,23 +12,23 @@ export interface BreadcrumbItem {
   imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nav aria-label="Breadcrumb" class="text-sm text-neutral-500 dark:text-neutral-400">
+    <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
       <ol class="flex flex-wrap items-center gap-2">
         @for (item of items(); track $index; let last = $last) {
           <li class="flex items-center gap-2">
             @if (!last && item.link) {
               <a
-                class="font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white"
+                class="font-medium text-zinc-600 hover:text-zinc-900"
                 [routerLink]="item.link"
                 >{{ item.label }}</a
               >
             } @else {
-              <span [class.font-semibold]="last" [class.text-neutral-900]="last" [class.dark:text-white]="last">
+              <span [class.font-semibold]="last" [class.text-zinc-900]="last">
                 {{ item.label }}
               </span>
             }
             @if (!last) {
-              <span aria-hidden="true" class="text-neutral-400">/</span>
+              <span aria-hidden="true" class="text-zinc-400">/</span>
             }
           </li>
         }

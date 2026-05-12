@@ -14,31 +14,32 @@ export interface SidebarNavItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <aside
-      class="flex h-full flex-col border-r border-neutral-200/80 bg-white/90 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90"
+      class="flex h-full flex-col border-r border-zinc-200/80 bg-white/90 backdrop-blur"
       [class.w-64]="!collapsed()"
       [class.w-[4.5rem]]="collapsed()"
     >
-      <div class="flex h-14 items-center gap-2 border-b border-neutral-200/80 px-4 dark:border-neutral-800">
-        <span
-          class="material-icons-outlined text-blue-600 dark:text-blue-400"
-          aria-hidden="true"
-          >apartment</span
-        >
+      <div class="flex h-14 items-center border-b border-zinc-200/80 px-4">
         @if (!collapsed()) {
-          <span class="text-sm font-semibold tracking-tight text-neutral-900 dark:text-white"
-            >Grand Plaza</span
-          >
+          <img
+            src="/logo-dark.png"
+            alt="Grand Plaza"
+            class="h-12 w-auto object-contain object-left"
+          />
+        } @else {
+          <img src="/logo-dark.png" alt="Grand Plaza" class="h-10 object-contain object-center" />
         }
       </div>
       <nav class="flex-1 space-y-1 overflow-y-auto p-2" aria-label="Primary">
         @for (item of items(); track item.link.join('/')) {
           <a
-            class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+            class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
             [routerLink]="item.link"
-            routerLinkActive="bg-blue-50 text-blue-800 dark:bg-blue-950/50 dark:text-blue-200"
+            routerLinkActive="bg-zinc-100 text-zinc-900"
             [routerLinkActiveOptions]="{ exact: item.link.length <= 1 }"
           >
-            <span class="material-icons-outlined text-[20px]" aria-hidden="true">{{ item.icon }}</span>
+            <span class="material-icons-outlined text-[20px]" aria-hidden="true">{{
+              item.icon
+            }}</span>
             @if (!collapsed()) {
               <span>{{ item.label }}</span>
             }
@@ -47,7 +48,7 @@ export interface SidebarNavItem {
       </nav>
       <button
         type="button"
-        class="m-2 flex items-center justify-center gap-2 rounded-lg border border-neutral-200 px-2 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+        class="m-2 flex items-center justify-center gap-2 rounded-lg border border-zinc-200 px-2 py-2 text-xs font-medium text-zinc-600 hover:bg-zinc-50"
         (click)="toggleCollapse.emit()"
         [attr.aria-expanded]="!collapsed()"
         [attr.aria-label]="collapsed() ? 'Expand sidebar' : 'Collapse sidebar'"

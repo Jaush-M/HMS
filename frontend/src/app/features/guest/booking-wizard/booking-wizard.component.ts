@@ -37,7 +37,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="mx-auto max-w-3xl space-y-4">
-      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">Booking wizard</h1>
+      <h1 class="text-2xl font-semibold text-zinc-900">Booking wizard</h1>
       <mat-stepper linear #stepper>
         <mat-step [stepControl]="searchForm" label="Stay">
           <form [formGroup]="searchForm" class="grid gap-4 py-4 md:grid-cols-2">
@@ -66,7 +66,7 @@ import { Router } from '@angular/router';
               <mat-datepicker #co />
             </mat-form-field>
             <div class="md:col-span-2">
-              <button mat-flat-button color="primary" type="button" matStepperNext (click)="loadRooms()">
+              <button mat-flat-button class="!bg-zinc-900 !text-white" type="button" matStepperNext (click)="loadRooms()">
                 Find rooms
               </button>
             </div>
@@ -74,7 +74,7 @@ import { Router } from '@angular/router';
         </mat-step>
         <mat-step label="Room">
           @if (roomsLoading()) {
-            <p class="py-6 text-sm text-neutral-500">Loading availability…</p>
+            <p class="py-6 text-sm text-zinc-500">Loading availability…</p>
           } @else {
             <mat-radio-group class="flex flex-col gap-2 py-4" [formControl]="roomCtrl">
               @for (r of rooms(); track r.id) {
@@ -85,7 +85,7 @@ import { Router } from '@angular/router';
             </mat-radio-group>
             <div class="mt-4 flex justify-between">
               <button mat-button matStepperPrevious type="button">Back</button>
-              <button mat-flat-button color="primary" matStepperNext type="button" [disabled]="!roomCtrl.value">
+              <button mat-flat-button class="!bg-zinc-900 !text-white" matStepperNext type="button" [disabled]="!roomCtrl.value">
                 Continue
               </button>
             </div>
@@ -99,24 +99,24 @@ import { Router } from '@angular/router';
           </div>
           <div class="flex justify-between">
             <button mat-button matStepperPrevious type="button">Back</button>
-            <button mat-flat-button color="primary" matStepperNext type="button">Review</button>
+            <button mat-flat-button class="!bg-zinc-900 !text-white" matStepperNext type="button">Review</button>
           </div>
         </mat-step>
         <mat-step label="Confirm">
           @if (roomCtrl.value; as pr) {
-            <div class="space-y-2 py-4 text-sm text-neutral-700 dark:text-neutral-200">
+            <div class="space-y-2 py-4 text-sm text-zinc-700">
               <p><strong>Hotel:</strong> {{ pr.hotelName }}</p>
               <p><strong>Room:</strong> {{ pr.roomNumber }} ({{ pr.type }})</p>
               <p>
                 <strong>Dates:</strong> {{ ymd(searchForm.value.checkIn) }} → {{ ymd(searchForm.value.checkOut) }}
               </p>
               <p><strong>Add-ons:</strong> {{ addOnSummary() }}</p>
-              <p class="text-xs text-neutral-500">Payment capture is simulated until PSP integration.</p>
+              <p class="text-xs text-zinc-500">Payment capture is simulated until PSP integration.</p>
             </div>
           }
           <div class="flex justify-between">
             <button mat-button matStepperPrevious type="button">Back</button>
-            <button mat-flat-button color="primary" type="button" [disabled]="submitting()" (click)="confirm()">
+            <button mat-flat-button class="!bg-zinc-900 !text-white" type="button" [disabled]="submitting()" (click)="confirm()">
               Confirm booking
             </button>
           </div>

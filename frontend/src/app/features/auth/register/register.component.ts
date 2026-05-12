@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -16,28 +15,57 @@ import { MSG } from '../../../core/i18n/ui-messages';
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     AppButtonComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto flex min-h-[70vh] max-w-lg items-center px-4 py-12">
-      <mat-card class="w-full !rounded-2xl !border !border-white/10 !bg-white/5 !shadow-2xl backdrop-blur-md">
-        <mat-card-header>
-          <mat-card-title class="!text-white">{{ msg.registerTitle }}</mat-card-title>
-          <mat-card-subtitle class="!text-white/70">Guests only — staff accounts are issued by IT</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content class="!pt-4">
-          <form class="grid gap-4 md:grid-cols-2" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="flex min-h-[calc(100vh-68px)]">
+      <!-- Left: hero image -->
+      <div class="relative hidden flex-1 lg:block">
+        <img
+          src="https://picsum.photos/seed/grand-plaza-auth/800/1200"
+          alt=""
+          aria-hidden="true"
+          class="h-full w-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-zinc-950/75 via-zinc-900/50 to-zinc-800/30"
+        ></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-12">
+          <img
+            src="/logo.png"
+            alt="Grand Plaza"
+            class="mb-6 h-12 w-auto object-contain object-left"
+          />
+          <p class="text-lg font-medium text-white/90">Begin your Grand Plaza journey.</p>
+          <p class="mt-1 text-sm text-white/55">
+            Create an account to manage your stays and rewards.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="flex flex-1 items-center justify-center px-6 py-12 lg:px-12">
+        <div class="w-full max-w-md">
+          <h1 class="text-2xl font-semibold tracking-tight text-zinc-900">
+            {{ msg.registerTitle }}
+          </h1>
+
+          <form class="mt-8 grid gap-4 md:grid-cols-2" [formGroup]="form" (ngSubmit)="submit()">
             <mat-form-field appearance="outline" class="w-full md:col-span-2">
               <mat-label>Email</mat-label>
               <input matInput type="email" formControlName="email" autocomplete="email" />
             </mat-form-field>
             <mat-form-field appearance="outline" class="w-full md:col-span-2">
               <mat-label>Password</mat-label>
-              <input matInput type="password" formControlName="password" autocomplete="new-password" />
+              <input
+                matInput
+                type="password"
+                formControlName="password"
+                autocomplete="new-password"
+              />
             </mat-form-field>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>First name</mat-label>
@@ -56,18 +84,30 @@ import { MSG } from '../../../core/i18n/ui-messages';
               <textarea matInput rows="2" formControlName="address"></textarea>
             </mat-form-field>
             @if (error()) {
-              <p class="md:col-span-2 text-sm text-rose-300" role="alert">{{ error() }}</p>
+              <p
+                class="col-span-2 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700"
+                role="alert"
+              >
+                {{ error() }}
+              </p>
             }
             <div class="md:col-span-2">
-              <app-button variant="primary" [loading]="loading()" type="submit">Create account</app-button>
+              <app-button variant="primary" class="w-full" [loading]="loading()" type="submit">
+                Create account
+              </app-button>
             </div>
           </form>
-          <p class="mt-4 text-center text-sm text-white/70">
+
+          <p class="mt-6 text-center text-sm text-zinc-500">
             Already registered?
-            <a routerLink="/login" class="underline hover:text-white">Sign in</a>
+            <a
+              routerLink="/login"
+              class="font-medium text-zinc-900 underline-offset-4 hover:underline"
+              >Sign in</a
+            >
           </p>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
     </div>
   `,
 })
