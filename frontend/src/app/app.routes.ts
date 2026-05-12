@@ -33,12 +33,16 @@ export const routes: Routes = [
       {
         path: 'rooms/search',
         loadComponent: () =>
-          import('./features/rooms/room-search/room-search.component').then((m) => m.RoomSearchComponent),
+          import('./features/rooms/room-search/room-search.component').then(
+            (m) => m.RoomSearchComponent,
+          ),
       },
       {
         path: 'rooms/:id',
         loadComponent: () =>
-          import('./features/rooms/room-detail/room-detail.component').then((m) => m.RoomDetailComponent),
+          import('./features/rooms/room-detail/room-detail.component').then(
+            (m) => m.RoomDetailComponent,
+          ),
       },
       {
         path: 'hotel',
@@ -70,15 +74,13 @@ export const routes: Routes = [
         path: 'guest',
         canActivate: [roleGuard],
         data: { roles: ['Guest'] },
-        loadChildren: () =>
-          import('./features/guest/guest.routes').then((m) => m.GUEST_ROUTES),
+        loadChildren: () => import('./features/guest/guest.routes').then((m) => m.GUEST_ROUTES),
       },
       {
         path: 'staff',
         canActivate: [roleGuard],
         data: { roles: ['FrontDeskStaff'] },
-        loadChildren: () =>
-          import('./features/staff/staff.routes').then((m) => m.STAFF_ROUTES),
+        loadChildren: () => import('./features/staff/staff.routes').then((m) => m.STAFF_ROUTES),
       },
       {
         path: 'manager',
@@ -91,8 +93,7 @@ export const routes: Routes = [
         path: 'admin',
         canActivate: [roleGuard],
         data: { roles: ['Admin'] },
-        loadChildren: () =>
-          import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+        loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
       },
       {
         path: 'bookings',

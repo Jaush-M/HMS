@@ -35,3 +35,14 @@ body {
 :focus-visible {
   @apply outline-none ring-2 ring-blue-600 ring-offset-2 ring-offset-white dark:ring-offset-neutral-950 dark:ring-blue-400;
 }
+
+.cal-unavailable {
+  background-color: oklch(95% 0.03 25);
+  border-radius: 50%;
+  position: relative;
+}
+
+.cal-unavailable .mat-calendar-body-cell-content {
+  color: oklch(55% 0.15 25);
+  text-decoration: line-through;
+}

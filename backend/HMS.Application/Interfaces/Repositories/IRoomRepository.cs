@@ -12,5 +12,6 @@ public interface IRoomRepository
     Task<IEnumerable<Room>> SearchRoomsAsync(
         string? location, DateTime? checkIn, DateTime? checkOut,
         int? guests, RoomType? roomType, decimal? minPrice, decimal? maxPrice);
+    Task<IEnumerable<(DateTime From, DateTime To)>> GetUnavailableDatesAsync(int roomId);
     Task UpdateAsync(Room room);
 }

@@ -29,6 +29,10 @@ export class RoomsApiService {
     return this.http.get<RoomDto[]>(`${this.base}/available`, { params: hp });
   }
 
+  getUnavailableDates(roomId: number): Observable<{ from: string; to: string }[]> {
+    return this.http.get<{ from: string; to: string }[]>(`${this.base}/${roomId}/unavailable-dates`);
+  }
+
   searchRooms(params: {
     location?: string;
     checkIn?: string;

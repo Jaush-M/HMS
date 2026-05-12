@@ -25,6 +25,15 @@ public class RoomsController : ControllerBase
         return room is null ? NotFound($"Room {id} not found.") : Ok(room);
     }
 
+    /// <summary>Returns booked date ranges for a room (past-cutoff, non-cancelled).</summary>
+    [HttpGet("{id:int}/unavailable-dates")]
+    [ProducesResponseType(typeof(IEnumerable<DateRangeDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<DateRangeDto>>> GetUnavailableDates(int id)
+    {
+        var dates = await _roomService.GetUnavailableDatesAsync(id);
+        return Ok(dates);
+    }
+
     /// <summary>
     /// Searches for available rooms in a hotel for the given date range.
     /// Optional minCapacity filter.

@@ -61,4 +61,14 @@ public class RoomService : IRoomService
             TotalCount = results.Count,
         };
     }
+
+    public async Task<IEnumerable<DateRangeDto>> GetUnavailableDatesAsync(int roomId)
+    {
+        var ranges = await _rooms.GetUnavailableDatesAsync(roomId);
+        return ranges.Select(r => new DateRangeDto
+        {
+            From = r.From.ToString("yyyy-MM-dd"),
+            To   = r.To.ToString("yyyy-MM-dd"),
+        });
+    }
 }

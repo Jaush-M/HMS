@@ -101,7 +101,7 @@ import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.com
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let r">
-                <a [routerLink]="['/rooms', r.id]" class="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline">Details</a>
+                <a [routerLink]="['/rooms', r.id]" [queryParams]="searchedDates()" class="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline">Details</a>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="cols"></tr>
@@ -122,6 +122,7 @@ export class RoomSearchComponent {
   readonly rooms = signal<RoomDto[]>([]);
   readonly loading = signal(false);
   readonly searched = signal(false);
+  readonly searchedDates = signal<{ checkIn?: string; checkOut?: string } | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     hotelId: [environment.defaultHotelId, Validators.required],
@@ -148,6 +149,7 @@ export class RoomSearchComponent {
     const checkIn = this.toYmd(v.checkIn);
     const checkOut = this.toYmd(v.checkOut);
     if (checkOut <= checkIn) return;
+    this.searchedDates.set({ checkIn, checkOut });
     this.loading.set(true);
     this.searched.set(true);
     this.roomsApi

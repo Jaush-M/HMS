@@ -89,6 +89,18 @@ public class RoomRepository : IRoomRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<(DateTime From, DateTime To)>> GetUnavailableDatesAsync(int roomId)
+    {
+        var cutoff = DateTime.UtcNow.Date;
+        var rows = await _db.BookingRooms
+            .Where(br => br.RoomId == roomId
+                      && br.Booking.Status != BookingStatus.Cancelled
+                      && br.Booking.CheckOutDate > cutoff)
+            .Select(br => new { From = br.Booking.CheckInDate, To = br.Booking.CheckOutDate })
+            .ToListAsync();
+        return rows.Select(r => (r.From.Date, r.To.Date));
+    }
+
     public async Task UpdateAsync(Room room)
     {
         _db.Rooms.Update(room);

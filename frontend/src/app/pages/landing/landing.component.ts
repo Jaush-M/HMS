@@ -255,6 +255,7 @@ interface Review {
                     </div>
                     <a
                       [routerLink]="['/rooms', room.roomId]"
+                      [queryParams]="lastSearch()"
                       class="rounded-full bg-zinc-900 px-4 py-1.5 text-[12px] font-bold text-white transition-colors hover:bg-zinc-700"
                     >
                       View details
@@ -753,6 +754,7 @@ export class LandingComponent implements AfterViewInit {
   readonly results = signal<RoomSearchResultItem[]>([]);
   readonly dateError = signal<string | null>(null);
   readonly year = new Date().getFullYear();
+  readonly lastSearch = signal<{ checkIn?: string; checkOut?: string; guests?: number }>({});
 
   // Default dates: today and today+4 days
   readonly defaultCheckIn = new Date();
@@ -800,6 +802,12 @@ export class LandingComponent implements AfterViewInit {
     if (this.loading()) return;
 
     const guestCount = guests ? parseInt(guests, 10) : undefined;
+
+    this.lastSearch.set({
+      checkIn: checkIn || undefined,
+      checkOut: checkOut || undefined,
+      guests: guestCount,
+    });
 
     this.loading.set(true);
     this.searched.set(true);

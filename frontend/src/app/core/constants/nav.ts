@@ -6,7 +6,7 @@ export function sidebarItemsForRole(role: UserRole): SidebarNavItem[] {
     case 'Guest':
       return [
         { label: 'Dashboard', icon: 'space_dashboard', link: ['/app/guest/dashboard'] },
-        { label: 'Book', icon: 'hotel', link: ['/app/guest/booking'] },
+        // { label: 'Book', icon: 'hotel', link: ['/app/guest/booking'] },
         { label: 'Bookings', icon: 'book_online', link: ['/app/bookings'] },
         { label: 'Billing', icon: 'receipt_long', link: ['/app/billing'] },
         { label: 'Profile', icon: 'person', link: ['/app/guest/profile'] },
