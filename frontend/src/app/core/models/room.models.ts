@@ -11,3 +11,22 @@ export interface RoomDto {
   description: string;
   floorNumber: number;
 }
+
+export interface RoomSearchResultItem {
+  hotelId: number;
+  hotelName: string;
+  city: string;
+  country: string;
+  roomId: number;
+  roomNumber: string;
+  type: string;
+  capacity: number;
+  floorNumber: number;
+  pricePerNight: number;
+  description: string;
+}
+
+export interface RoomSearchResponse {
+  results: RoomSearchResultItem[];
+  totalCount: number;
+}

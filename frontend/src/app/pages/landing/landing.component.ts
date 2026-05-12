@@ -1,5 +1,17 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { HotelsApiService } from '../../core/services/hotels-api.service';
+import { RoomsApiService } from '../../core/services/rooms-api.service';
+import type { RoomSearchResultItem } from '../../core/models/room.models';
 
 interface Faq {
   q: string;
@@ -47,66 +59,214 @@ interface Review {
 
         <!-- Search form -->
         <div
-          class="mt-8 grid grid-cols-1 rounded-2xl bg-white p-2 shadow-2xl md:grid-cols-[1fr_1px_1fr_1px_1fr_auto]"
+          class="mt-8 grid grid-cols-1 rounded-2xl bg-white p-2 shadow-2xl md:grid-cols-[1fr_1px_1fr_1px_1fr_1px_auto_auto]"
         >
+          <!-- Location -->
           <div class="flex items-center gap-3 px-4 py-3">
             <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true"
-              >bed</span
+              >location_on</span
             >
             <div class="min-w-0 flex-1">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Room type</p>
+              <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+                Destination
+              </p>
               <select
-                class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none"
+                #locationRef
+                class="mt-0.5 w-full bg-transparent text-sm font-semibold text-zinc-800 outline-none appearance-none cursor-pointer"
               >
-                <option value="">Any type</option>
-                <option>Overwater Bungalow</option>
-                <option>Beach Villa</option>
-                <option>Ocean Suite</option>
-                <option>Garden Room</option>
+                <option value="" class="font-normal text-zinc-400">Any destination</option>
+                @for (hotel of destinations(); track hotel.id) {
+                  <option [value]="hotel.city">{{ hotel.city }}</option>
+                }
               </select>
             </div>
           </div>
           <div class="hidden bg-zinc-100 md:block"></div>
+          <!-- Check-in -->
           <div class="flex items-center gap-3 px-4 py-3">
-            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true"
+            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl"
               >calendar_today</span
             >
             <div class="min-w-0 flex-1">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Check-in</p>
+              <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+                Check-in <span class="text-red-400 text-xs align-top ml-0.5">*</span>
+              </p>
               <input
+                #checkInRef
                 type="date"
+                required
+                [valueAsDate]="defaultCheckIn"
+                [min]="todayDateString"
                 class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none"
               />
             </div>
           </div>
           <div class="hidden bg-zinc-100 md:block"></div>
+          <!-- Check-out -->
           <div class="flex items-center gap-3 px-4 py-3">
-            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true"
+            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl"
               >calendar_today</span
             >
             <div class="min-w-0 flex-1">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Check-out</p>
+              <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+                Check-out <span class="text-red-400 text-xs align-top ml-0.5">*</span>
+              </p>
               <input
+                #checkOutRef
                 type="date"
+                required
+                [valueAsDate]="defaultCheckOut"
+                [min]="defaultCheckInDateString"
                 class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none"
               />
             </div>
           </div>
-          <a
-            routerLink="/rooms/search"
-            class="flex items-center justify-center gap-1.5 rounded-xl bg-cyan-500 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-cyan-600 active:scale-[0.98]"
+          <div class="hidden bg-zinc-100 md:block"></div>
+          <!-- Guests -->
+          <div class="flex items-center gap-3 px-4 py-3">
+            <span class="material-icons-outlined shrink-0 text-zinc-400 text-xl" aria-hidden="true"
+              >group</span
+            >
+            <div class="min-w-0 flex-1">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Guests</p>
+              <input
+                #guestsRef
+                type="number"
+                min="1"
+                max="12"
+                placeholder="2"
+                class="mt-0.5 w-full cursor-pointer bg-transparent text-sm font-semibold text-zinc-800 outline-none placeholder:font-normal placeholder:text-zinc-400"
+              />
+            </div>
+          </div>
+          <!-- Search button -->
+          <button
+            type="button"
+            (click)="
+              search(locationRef.value, checkInRef.value, checkOutRef.value, guestsRef.value)
+            "
+            [disabled]="loading()"
+            class="flex items-center justify-center gap-1.5 rounded-xl bg-cyan-500 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-cyan-600 active:scale-[0.98] disabled:opacity-60 mt-1 md:mt-0"
           >
             <span class="material-icons-outlined text-lg" aria-hidden="true">search</span>
             Search
-          </a>
+          </button>
         </div>
 
-        <p class="mt-8 flex items-center gap-1.5 text-xs text-white/30">
-          <span class="material-icons-outlined text-base" aria-hidden="true">south</span>
-          Scroll to explore
-        </p>
+        @if (dateError()) {
+          <div class="mt-4 rounded-lg bg-red-500/90 p-3 text-sm text-white backdrop-blur-sm">
+            {{ dateError() }}
+          </div>
+        }
+
+        @if (!searched()) {
+          <p class="mt-8 flex items-center gap-1.5 text-xs text-white/30">
+            <span class="material-icons-outlined text-base" aria-hidden="true">south</span>
+            Scroll to explore
+          </p>
+        }
       </div>
     </section>
+
+    <!-- ─── SEARCH RESULTS ─── -->
+    @if (searched()) {
+      <section id="search-results" class="bg-zinc-50 py-16 px-6">
+        <div class="mx-auto max-w-6xl">
+          @if (loading()) {
+            <!-- Skeleton -->
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+              @for (s of [1, 2, 3, 4, 5, 6]; track s) {
+                <div class="animate-pulse rounded-2xl bg-white border border-zinc-100 p-5">
+                  <div class="h-4 w-3/4 rounded bg-zinc-200 mb-3"></div>
+                  <div class="h-3 w-1/2 rounded bg-zinc-100 mb-6"></div>
+                  <div class="h-10 w-full rounded bg-zinc-100 mb-3"></div>
+                  <div class="h-3 w-2/3 rounded bg-zinc-100"></div>
+                </div>
+              }
+            </div>
+          } @else if (results().length === 0) {
+            <!-- Empty state -->
+            <div class="flex flex-col items-center justify-center py-20 text-center">
+              <span class="material-icons-outlined text-5xl text-zinc-300" aria-hidden="true"
+                >search_off</span
+              >
+              <p class="mt-5 text-xl font-semibold text-zinc-700">No rooms found</p>
+              <p class="mt-2 text-[14px] text-zinc-400">
+                Try a different destination, adjust your dates, or lower the guest count.
+              </p>
+            </div>
+          } @else {
+            <!-- Results header -->
+            <div class="mb-8 flex items-baseline justify-between">
+              <div>
+                <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Available rooms</h2>
+                <p class="mt-1 text-[13px] text-zinc-400">
+                  {{ results().length }} room{{ results().length === 1 ? '' : 's' }} found
+                </p>
+              </div>
+              <a
+                routerLink="/rooms/search"
+                class="shrink-0 rounded-full border border-zinc-200 bg-white px-5 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50"
+              >
+                Advanced search
+              </a>
+            </div>
+            <!-- Cards grid -->
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+              @for (room of results(); track room.roomId) {
+                <div
+                  class="group flex flex-col rounded-2xl bg-white border border-zinc-100 overflow-hidden shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_24px_-6px_rgba(0,0,0,0.1)]"
+                >
+                  <!-- Type badge + price -->
+                  <div class="flex items-start justify-between p-5 pb-3">
+                    <div>
+                      <span
+                        class="inline-block rounded-full bg-cyan-50 px-2.5 py-0.5 text-[11px] font-semibold text-cyan-700"
+                      >
+                        {{ formatType(room.type) }}
+                      </span>
+                      <p class="mt-2 text-sm font-medium text-zinc-500">
+                        {{ room.hotelName }}
+                      </p>
+                      <p class="text-[12px] text-zinc-400">{{ room.city }}, {{ room.country }}</p>
+                    </div>
+                    <div class="text-right shrink-0 ml-3">
+                      <p class="text-xl font-bold text-zinc-900">&#36;{{ room.pricePerNight }}</p>
+                      <p class="text-[11px] text-zinc-400">/ night</p>
+                    </div>
+                  </div>
+                  <!-- Description -->
+                  <p class="px-5 text-[13px] leading-5 text-zinc-500 line-clamp-2 flex-1">
+                    {{ room.description }}
+                  </p>
+                  <!-- Footer -->
+                  <div
+                    class="flex items-center justify-between px-5 py-4 mt-3 border-t border-zinc-50"
+                  >
+                    <div class="flex items-center gap-3 text-[12px] text-zinc-400">
+                      <span class="flex items-center gap-1">
+                        <span class="material-icons-outlined text-base text-zinc-300">person</span>
+                        {{ room.capacity }} guest{{ room.capacity === 1 ? '' : 's' }}
+                      </span>
+                      <span class="flex items-center gap-1">
+                        <span class="material-icons-outlined text-base text-zinc-300">layers</span>
+                        Floor {{ room.floorNumber }}
+                      </span>
+                    </div>
+                    <a
+                      [routerLink]="['/rooms', room.roomId]"
+                      class="rounded-full bg-zinc-900 px-4 py-1.5 text-[12px] font-bold text-white transition-colors hover:bg-zinc-700"
+                    >
+                      View details
+                    </a>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </section>
+    }
 
     <!-- ─── ABOUT ─── -->
     <section class="bg-white py-24 px-6">
@@ -583,9 +743,101 @@ interface Review {
     </footer>
   `,
 })
-export class LandingComponent {
+export class LandingComponent implements AfterViewInit {
+  private readonly roomsApi = inject(RoomsApiService);
+  private readonly hotelsApi = inject(HotelsApiService);
+
   readonly openFaq = signal<number | null>(null);
+  readonly loading = signal(false);
+  readonly searched = signal(false);
+  readonly results = signal<RoomSearchResultItem[]>([]);
+  readonly dateError = signal<string | null>(null);
   readonly year = new Date().getFullYear();
+
+  // Default dates: today and today+4 days
+  readonly defaultCheckIn = new Date();
+  readonly defaultCheckOut = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
+
+  // For min attribute on date inputs
+  readonly todayDateString = new Date().toISOString().split('T')[0];
+  readonly defaultCheckInDateString = this.defaultCheckIn.toISOString().split('T')[0];
+
+  @ViewChild('checkInRef') checkInInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('checkOutRef') checkOutInput!: ElementRef<HTMLInputElement>;
+
+  ngAfterViewInit(): void {
+    // Optional: Ensure default values are visually set if browser doesn't respect valueAsDate
+    if (this.checkInInput) {
+      this.checkInInput.nativeElement.valueAsDate = this.defaultCheckIn;
+    }
+    if (this.checkOutInput) {
+      this.checkOutInput.nativeElement.valueAsDate = this.defaultCheckOut;
+    }
+  }
+
+  search(location: string, checkIn: string, checkOut: string, guests: string): void {
+    // Clear previous error
+    this.dateError.set(null);
+
+    // Validate required dates
+    if (!checkIn) {
+      this.dateError.set('Please select a check-in date.');
+      return;
+    }
+    if (!checkOut) {
+      this.dateError.set('Please select a check-out date.');
+      return;
+    }
+
+    // Optional: Validate that check-out is after check-in
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    if (checkOutDate <= checkInDate) {
+      this.dateError.set('Check-out date must be after check-in date.');
+      return;
+    }
+
+    if (this.loading()) return;
+
+    const guestCount = guests ? parseInt(guests, 10) : undefined;
+
+    this.loading.set(true);
+    this.searched.set(true);
+    this.results.set([]);
+
+    setTimeout(
+      () => document.getElementById('search-results')?.scrollIntoView({ behavior: 'smooth' }),
+      0,
+    );
+
+    this.roomsApi
+      .searchRooms({
+        location: location || undefined,
+        checkIn: checkIn || undefined,
+        checkOut: checkOut || undefined,
+        guests: guestCount,
+      })
+      .subscribe({
+        next: (r) => {
+          this.results.set(r.results);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.results.set([]);
+          this.loading.set(false);
+        },
+      });
+  }
+
+  formatType(type: string): string {
+    return type.replace(/([A-Z])/g, ' $1').trim();
+  }
+
+  toggleFaq(i: number): void {
+    this.openFaq.update((v) => (v === i ? null : i));
+  }
+
+  readonly destinations = toSignal(this.hotelsApi.getAll(), { initialValue: [] });
 
   readonly faqs: Faq[] = [
     {
@@ -636,8 +888,4 @@ export class LandingComponent {
       initials: 'MC',
     },
   ];
-
-  toggleFaq(i: number): void {
-    this.openFaq.update((v) => (v === i ? null : i));
-  }
 }

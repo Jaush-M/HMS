@@ -19,15 +19,17 @@ export interface SidebarNavItem {
       [class.w-[4.5rem]]="collapsed()"
     >
       <div class="flex h-14 items-center border-b border-zinc-200/80 px-4">
-        @if (!collapsed()) {
-          <img
-            src="/logo-dark.png"
-            alt="Grand Plaza"
-            class="h-12 w-auto object-contain object-left"
-          />
-        } @else {
-          <img src="/logo-dark.png" alt="Grand Plaza" class="h-10 object-contain object-center" />
-        }
+        <a href="/">
+          @if (!collapsed()) {
+            <img
+              src="/logo-dark.png"
+              alt="Grand Plaza"
+              class="h-12 w-auto object-contain object-left"
+            />
+          } @else {
+            <img src="/logo-dark.png" alt="Grand Plaza" class="h-10 object-contain object-center" />
+          }
+        </a>
       </div>
       <nav class="flex-1 space-y-1 overflow-y-auto p-2" aria-label="Primary">
         @for (item of items(); track item.link.join('/')) {

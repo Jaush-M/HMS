@@ -25,7 +25,7 @@ import { MSG } from '../../../core/i18n/ui-messages';
       <!-- Left: hero image -->
       <div class="relative hidden flex-1 lg:block">
         <img
-          src="https://picsum.photos/seed/grand-plaza-auth/800/1200"
+          src="https://images.unsplash.com/photo-1574223706388-0e0f6f0390b2?h=1200&w=800&auto=format&fit=crop"
           alt=""
           aria-hidden="true"
           class="h-full w-full object-cover"
