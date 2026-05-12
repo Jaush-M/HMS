@@ -66,6 +66,20 @@ import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.com
                 <th mat-header-cell *matHeaderCellDef>Hotel</th>
                 <td mat-cell *matCellDef="let b">{{ b.hotelName }}</td>
               </ng-container>
+              <ng-container matColumnDef="room">
+                <th mat-header-cell *matHeaderCellDef>Room</th>
+                <td mat-cell *matCellDef="let b">
+                  @if (b.rooms.length > 0) {
+                    {{ b.rooms[0].roomNumber }} · {{ formatType(b.rooms[0].type) }}
+                  } @else {
+                    —
+                  }
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="guests">
+                <th mat-header-cell *matHeaderCellDef>Guests</th>
+                <td mat-cell *matCellDef="let b">{{ b.guestCount }}</td>
+              </ng-container>
               <ng-container matColumnDef="dates">
                 <th mat-header-cell *matHeaderCellDef>Dates</th>
                 <td mat-cell *matCellDef="let b">
@@ -78,7 +92,7 @@ import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.com
               </ng-container>
               <ng-container matColumnDef="total">
                 <th mat-header-cell *matHeaderCellDef>Total</th>
-                <td mat-cell *matCellDef="let b">£{{ b.totalAmount }}</td>
+                <td mat-cell *matCellDef="let b">&#36;{{ b.totalAmount }}</td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="cols"></tr>
               <tr mat-row *matRowDef="let row; columns: cols"></tr>
@@ -94,7 +108,7 @@ export class GuestDashboardComponent {
   private readonly bookingsApi = inject(BookingsApiService);
   private readonly router = inject(Router);
 
-  readonly cols = ['hotel', 'dates', 'status', 'total'];
+  readonly cols = ['hotel', 'room', 'guests', 'dates', 'status', 'total'];
   readonly bookings = signal<BookingDto[]>([]);
   readonly loading = signal(true);
   readonly loyalty = signal(1280);
@@ -121,5 +135,9 @@ export class GuestDashboardComponent {
 
   navBook(): void {
     void this.router.navigate(['/app/guest/booking']);
+  }
+
+  formatType(type: string): string {
+    return type.replace(/([A-Z])/g, ' $1').trim();
   }
 }

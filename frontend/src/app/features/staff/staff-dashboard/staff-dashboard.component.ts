@@ -44,6 +44,20 @@ import { AppLoaderComponent } from '../../../shared/ui/app-loader/app-loader.com
                 <th mat-header-cell *matHeaderCellDef>Guest</th>
                 <td mat-cell *matCellDef="let b">{{ b.guestName }}</td>
               </ng-container>
+              <ng-container matColumnDef="room">
+                <th mat-header-cell *matHeaderCellDef>Room</th>
+                <td mat-cell *matCellDef="let b">
+                  @if (b.rooms.length > 0) {
+                    {{ b.rooms[0].roomNumber }} · {{ formatType(b.rooms[0].type) }}
+                  } @else {
+                    —
+                  }
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="guests">
+                <th mat-header-cell *matHeaderCellDef>Guests</th>
+                <td mat-cell *matCellDef="let b">{{ b.guestCount }}</td>
+              </ng-container>
               <ng-container matColumnDef="window">
                 <th mat-header-cell *matHeaderCellDef>Stay window</th>
                 <td mat-cell *matCellDef="let b">
@@ -70,7 +84,7 @@ export class StaffDashboardComponent {
   readonly bookings = signal<BookingDto[]>([]);
   readonly rooms = signal<RoomDto[]>([]);
   readonly loading = signal(true);
-  readonly cols = ['guest', 'window', 'status'];
+  readonly cols = ['guest', 'room', 'guests', 'window', 'status'];
 
   readonly todayRows = signal<BookingDto[]>([]);
   readonly arrivals = signal(0);
@@ -86,6 +100,10 @@ export class StaffDashboardComponent {
       },
       error: () => this.refresh(),
     });
+  }
+
+  formatType(type: string): string {
+    return type.replace(/([A-Z])/g, ' $1').trim();
   }
 
   private refresh(): void {

@@ -13,6 +13,7 @@ export interface BookingDto {
   totalAmount: number;
   cancellationFee: number;
   notes: string;
+  guestCount: number;
   createdAt: string;
   rooms: RoomDto[];
   services: BookingServiceDto[];
@@ -31,4 +32,5 @@ export interface CreateBookingDto {
   roomIds: number[];
   services: BookingServiceRequestDto[];
   notes: string;
+  guestCount: number;
 }

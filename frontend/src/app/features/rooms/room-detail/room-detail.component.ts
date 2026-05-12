@@ -208,8 +208,33 @@ import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.com
                     <mat-date-range-picker #picker [dateClass]="dateClass" />
                   </mat-form-field>
 
+                  <!-- Guest count -->
+                  <div class="mt-3">
+                    <label class="mb-1 block text-xs font-medium text-zinc-600">
+                      Guests
+                      <span class="font-normal text-zinc-400">(max {{ r.capacity }})</span>
+                    </label>
+                    <div class="flex items-center gap-3">
+                      <button
+                        type="button"
+                        (click)="guestCount.update(n => Math.max(1, n - 1))"
+                        [disabled]="guestCount() <= 1"
+                        class="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 disabled:opacity-40"
+                        aria-label="Decrease guest count"
+                      >−</button>
+                      <span class="w-6 text-center text-sm font-semibold text-zinc-800">{{ guestCount() }}</span>
+                      <button
+                        type="button"
+                        (click)="guestCount.update(n => Math.min(r.capacity, n + 1))"
+                        [disabled]="guestCount() >= r.capacity"
+                        class="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 disabled:opacity-40"
+                        aria-label="Increase guest count"
+                      >+</button>
+                    </div>
+                  </div>
+
                   @if (nights() > 0) {
-                    <div class="mt-1 rounded-xl bg-zinc-50 px-3 py-2.5 text-sm">
+                    <div class="mt-3 rounded-xl bg-zinc-50 px-3 py-2.5 text-sm">
                       <div class="flex justify-between text-zinc-600">
                         <span
                           >&#36;{{ r.priceOffPeak }} × {{ nights() }} night{{
@@ -312,6 +337,10 @@ import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.com
                       <span class="font-medium">{{ r.roomNumber }} · {{ formatType(r.type) }}</span>
                     </div>
                     <div class="flex justify-between text-zinc-600">
+                      <span>Guests</span>
+                      <span class="font-medium">{{ guestCount() }}</span>
+                    </div>
+                    <div class="flex justify-between text-zinc-600">
                       <span>Check-in</span>
                       <span class="font-medium">{{ formatDateDisplay(checkIn()) }}</span>
                     </div>
@@ -373,6 +402,7 @@ import { AppButtonComponent } from '../../../shared/ui/app-button/app-button.com
   `,
 })
 export class RoomDetailComponent {
+  protected readonly Math = Math;
   private readonly route = inject(ActivatedRoute);
   private readonly roomsApi = inject(RoomsApiService);
   private readonly ancillaryApi = inject(AncillaryServicesApiService);
@@ -396,6 +426,9 @@ export class RoomDetailComponent {
   readonly checkIn = signal<Date | null>(null);
   readonly checkOut = signal<Date | null>(null);
   readonly minDate = new Date();
+
+  // Guest count
+  readonly guestCount = signal(1);
 
   // Services
   readonly services = signal<AncillaryServiceDto[]>([]);
@@ -569,6 +602,7 @@ export class RoomDetailComponent {
         roomIds: [r.id],
         services,
         notes: '',
+        guestCount: this.guestCount(),
       })
       .subscribe({
         next: (booking) => {

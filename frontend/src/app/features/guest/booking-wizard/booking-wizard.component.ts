@@ -218,6 +218,7 @@ export class BookingWizardComponent {
         roomIds: [room.id],
         services,
         notes: 'Booked via HMS web',
+        guestCount: 1,
       })
       .subscribe({
         next: () => {
