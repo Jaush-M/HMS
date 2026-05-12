@@ -1,7 +1,16 @@
-import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthService } from '../../core/auth/auth.service';
+import { roleDashboardPath } from '../../core/constants/roles';
 
 @Component({
   selector: 'app-public-layout',
@@ -20,7 +29,7 @@ import { filter } from 'rxjs';
         role="banner"
       >
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-[18px]">
-          <!-- Logo: cross-fade between white (hero) and color (frosted) -->
+          <!-- Logo -->
           <a
             routerLink="/"
             class="relative block h-18 w-20 shrink-0"
@@ -83,28 +92,63 @@ import { filter } from 'rxjs';
             >
           </nav>
 
-          <!-- CTA buttons + mobile hamburger -->
+          <!-- CTA / user area + mobile hamburger -->
           <div class="flex items-center gap-2">
-            <a
-              routerLink="/login"
-              class="hidden rounded-full px-4 py-2 text-[13px] font-medium transition-all duration-200 sm:block"
-              [class]="
-                isTransparent()
-                  ? 'border border-white/30 text-white hover:bg-white/10'
-                  : 'border border-zinc-200 text-zinc-700 hover:bg-zinc-50'
-              "
-              >Sign in</a
-            >
-            <a
-              routerLink="/register"
-              class="rounded-full px-4 py-2 text-[13px] font-semibold transition-all duration-200"
-              [class]="
-                isTransparent()
-                  ? 'bg-white text-zinc-900 hover:bg-zinc-100'
-                  : 'bg-zinc-900 text-white hover:bg-zinc-800'
-              "
-              >Register</a
-            >
+            @if (auth.isAuthenticated()) {
+              <!-- Authenticated: avatar + dashboard link + sign out -->
+              <a
+                [routerLink]="dashboardPath()"
+                class="hidden rounded-full px-4 py-2 text-[13px] font-medium transition-all duration-200 sm:block"
+                [class]="
+                  isTransparent()
+                    ? 'border border-white/30 text-white hover:bg-white/10'
+                    : 'border border-zinc-200 text-zinc-700 hover:bg-zinc-50'
+                "
+                >Dashboard</a
+              >
+
+              <!-- Avatar chip -->
+              <button
+                type="button"
+                (click)="auth.logout()"
+                class="flex items-center gap-2 rounded-full py-1 pl-1 pr-3 text-[13px] font-semibold transition-all duration-200"
+                [class]="
+                  isTransparent()
+                    ? 'bg-white/15 text-white hover:bg-white/25'
+                    : 'bg-zinc-900 text-white hover:bg-zinc-700'
+                "
+                title="Sign out"
+              >
+                <span
+                  class="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold"
+                  [class]="isTransparent() ? 'bg-white/30 text-white' : 'bg-white/20 text-white'"
+                  >{{ initials() }}</span
+                >
+                <span class="hidden sm:block">Sign out</span>
+              </button>
+            } @else {
+              <!-- Guest: sign in + register -->
+              <a
+                routerLink="/login"
+                class="hidden rounded-full px-4 py-2 text-[13px] font-medium transition-all duration-200 sm:block"
+                [class]="
+                  isTransparent()
+                    ? 'border border-white/30 text-white hover:bg-white/10'
+                    : 'border border-zinc-200 text-zinc-700 hover:bg-zinc-50'
+                "
+                >Sign in</a
+              >
+              <a
+                routerLink="/register"
+                class="rounded-full px-4 py-2 text-[13px] font-semibold transition-all duration-200"
+                [class]="
+                  isTransparent()
+                    ? 'bg-white text-zinc-900 hover:bg-zinc-100'
+                    : 'bg-zinc-900 text-white hover:bg-zinc-800'
+                "
+                >Register</a
+              >
+            }
 
             <!-- Hamburger — mobile only -->
             <button
@@ -124,7 +168,7 @@ import { filter } from 'rxjs';
           </div>
         </div>
 
-        <!-- Mobile menu panel (inside fixed header so it scrolls with it) -->
+        <!-- Mobile menu panel -->
         @if (mobileOpen()) {
           <nav
             class="border-t px-4 pb-5 pt-3 md:hidden"
@@ -166,33 +210,53 @@ import { filter } from 'rxjs';
                 >Contact</a
               >
             </div>
+
             <div
               class="mt-3 flex gap-2 border-t pt-3"
               [class]="isTransparent() ? 'border-white/10' : 'border-zinc-100'"
             >
-              <a
-                routerLink="/login"
-                class="flex-1 rounded-xl py-2.5 text-center text-sm font-medium transition-colors"
-                [class]="
-                  isTransparent()
-                    ? 'border border-white/25 text-white hover:bg-white/10'
-                    : 'border border-zinc-200 text-zinc-700 hover:bg-zinc-50'
-                "
-                >Sign in</a
-              >
-              <a
-                routerLink="/register"
-                class="flex-1 rounded-xl py-2.5 text-center text-sm font-semibold transition-colors"
-                [class]="isTransparent() ? 'bg-white text-zinc-900' : 'bg-zinc-900 text-white'"
-                >Register</a
-              >
+              @if (auth.isAuthenticated()) {
+                <a
+                  [routerLink]="dashboardPath()"
+                  class="flex-1 rounded-xl py-2.5 text-center text-sm font-medium transition-colors"
+                  [class]="
+                    isTransparent()
+                      ? 'border border-white/25 text-white hover:bg-white/10'
+                      : 'border border-zinc-200 text-zinc-700 hover:bg-zinc-50'
+                  "
+                  >Dashboard</a
+                >
+                <button
+                  type="button"
+                  (click)="auth.logout()"
+                  class="flex-1 rounded-xl py-2.5 text-center text-sm font-semibold transition-colors"
+                  [class]="isTransparent() ? 'bg-white text-zinc-900' : 'bg-zinc-900 text-white'"
+                >
+                  Sign out
+                </button>
+              } @else {
+                <a
+                  routerLink="/login"
+                  class="flex-1 rounded-xl py-2.5 text-center text-sm font-medium transition-colors"
+                  [class]="
+                    isTransparent()
+                      ? 'border border-white/25 text-white hover:bg-white/10'
+                      : 'border border-zinc-200 text-zinc-700 hover:bg-zinc-50'
+                  "
+                  >Sign in</a
+                >
+                <a
+                  routerLink="/register"
+                  class="flex-1 rounded-xl py-2.5 text-center text-sm font-semibold transition-colors"
+                  [class]="isTransparent() ? 'bg-white text-zinc-900' : 'bg-zinc-900 text-white'"
+                  >Register</a
+                >
+              }
             </div>
           </nav>
         }
       </header>
 
-      <!-- Page content — hero page has no top padding (navbar overlaps hero image).
-           All other routes get padding equal to the fixed navbar height (~68px). -->
       <main [style.paddingTop]="isHeroPage() ? null : '68px'">
         <router-outlet />
       </main>
@@ -201,13 +265,29 @@ import { filter } from 'rxjs';
 })
 export class PublicLayoutComponent {
   private readonly router = inject(Router);
+  readonly auth = inject(AuthService);
 
   readonly scrolled = signal(false);
   readonly mobileOpen = signal(false);
   readonly isHeroPage = signal(false);
 
+  readonly initials = computed(() => {
+    const name = this.auth.fullName();
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .slice(0, 2)
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase();
+  });
+
+  readonly dashboardPath = computed(() => {
+    const role = this.auth.role();
+    return role ? roleDashboardPath(role) : '/app';
+  });
+
   constructor() {
-    // Set initial hero-page state from the current URL on first load
     this.isHeroPage.set(this.router.url === '/');
 
     this.router.events
@@ -218,7 +298,6 @@ export class PublicLayoutComponent {
       .subscribe((e) => {
         const url = (e as NavigationEnd).urlAfterRedirects;
         this.isHeroPage.set(url === '/');
-        // Re-evaluate scroll position after navigation (browser scrolls to top)
         this.scrolled.set(window.scrollY > 60);
         this.mobileOpen.set(false);
       });
